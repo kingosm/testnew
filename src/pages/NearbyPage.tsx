@@ -101,6 +101,7 @@ const NearbyPage = () => {
             : undefined,
       }))
       .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity))
+      .filter((r) => (r.distance ?? Infinity) <= 1) // Max 1km distance
     : restaurants;
 
   return (
