@@ -1,0 +1,645 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { format } from 'date-fns';
+
+type Language = 'en' | 'ku' | 'ar';
+type Direction = 'ltr' | 'rtl';
+
+interface LanguageContextType {
+    language: Language;
+    setLanguage: (lang: Language) => void;
+    dir: Direction;
+    t: (key: string, params?: Record<string, string | number>) => string;
+    formatNumber: (num: number) => string;
+    formatDate: (date: Date, formatStr?: string) => string;
+    isRTL: boolean;
+    translateCategoryName: (name: string) => string;
+}
+
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+
+const translations: Record<Language, Record<string, string>> = {
+    en: {
+        'nav.home': 'Home',
+        'nav.categories': 'Categories',
+        'nav.nearby': 'Near Me',
+        'nav.favorites': 'Favorites',
+        'nav.signin': 'Sign In',
+        'nav.signout': 'Sign Out',
+        'nav.admin': 'Admin Panel',
+        'nav.subtitle.premium': 'Explore the Best of Kurdistan',
+        'categories.title': 'Curated Collections',
+        'categories.subtitle': 'Explore our hand-picked selections of the best places in Kurdistan.',
+        'hero.badge': 'Discover Your Next Favorite Place',
+        'hero.title.part1': 'Find Great',
+        'hero.title.part2': 'Places',
+        'hero.desc.premium': "The ultimate discovery guide to Kurdistan's most unique destinations, hidden gems, and localfavorites.",
+        'hero.locating': 'Finding places nearby...',
+        'hero.collections': 'Places',
+        'hero.stats.diners': 'Explorer Community',
+        'hero.stats.rating': 'Top Rated Spots',
+        'index.provinces.title': 'Explore by Province',
+        'index.provinces.subtitle': 'Discover the best spots in your city',
+        'index.explore.title': 'Explore by Category',
+        'index.explore.subtitle': 'Find the perfect match for your mood',
+        'index.explore.desc.premium': 'From scenic mountain retreats to urban nightlife, find the perfect spot for any occasion.',
+        'index.view_all': 'Discover More',
+        'index.featured.title': 'Handpicked Destinations',
+        'index.no_results': 'No places found. Check back soon for new discoveries!',
+        'index.cta.title.premium': 'Start Your Journey with Kurdistan Places',
+        'index.cta.desc.premium': 'Join our community of explorers. Save places, share reviews, and discover Kurdistan like never before.',
+        'index.cta.btn': 'Explore Now',
+        'categories.badge.premium': 'Curated Destinations',
+        'nearby.badge.premium': 'Explore Around You',
+        'nearby.title': 'Nearby Places',
+        'favorites.badge.premium': 'My Discoveries',
+        'auth.badge.premium': 'Join the Discovery',
+        'auth.signin_failed': 'Sign in failed',
+        'auth.invalid_credentials': 'Invalid email or password. Please try again.',
+        'auth.welcome_back': 'Welcome back to your map!',
+        'auth.signin_success': 'You are now ready to explore.',
+        'auth.error': 'Error',
+        'auth.generic_error': 'Something went wrong. Please try again.',
+        'auth.account_exists': 'Account exists',
+        'auth.email_exists': 'An account with this email already exists. Please sign in instead.',
+        'auth.account_created': 'Account created!',
+        'auth.welcome_new': 'Welcome to Kurdistan Places.',
+        'auth.discover_local': 'Explore local destinations',
+        'auth.tab.signin': 'Sign In',
+        'auth.tab.signup': 'Sign Up',
+        'auth.email': 'Email',
+        'auth.password': 'Password',
+        'auth.fullname': 'Full Name',
+        'auth.btn.signing_in': 'Finding your account...',
+        'auth.btn.signin': 'Sign In',
+        'auth.btn.creating': 'Preparing your map...',
+        'auth.btn.create': 'Start Exploring',
+        'auth.val.email': 'Please enter a valid email address',
+        'auth.val.password': 'Password must be at least 6 characters',
+        'auth.forgot_password': 'Forgot Password?',
+        'auth.reset_password': 'Reset Password',
+        'auth.reset_link_sent': 'Reset link sent! Check your email.',
+        'auth.back_to_signin': 'Back to Sign In',
+        'auth.send_reset': 'Send Reset Link',
+        'auth.new_password': 'New Password',
+        'auth.update_password': 'Update Password',
+        'auth.password_updated': 'Password updated successfully!',
+        'nearby.detected': 'Area Identified',
+        'nearby.enable': 'Enable Location Access',
+        'nearby.finding': 'Identifying your area...',
+        'nearby.error': 'Unable to find your location. Please check your settings.',
+        'nearby.subtitle.location': 'Discover restaurants based on your current location',
+        'nearby.subtitle.no_location': 'Enable location access to find restaurants near you',
+        'error.geo.unsupported': 'Geolocation is not supported by your browser',
+        'restaurant.not_found': 'Place Not Found',
+        'restaurant.back': 'Back to Discovery',
+        'restaurant.reviews': 'reviews',
+        'restaurant.review': 'review',
+        'restaurant.call': 'Call Now',
+        'restaurant.directions': 'Open Maps',
+        'restaurant.tab.about': 'Details',
+        'restaurant.tab.menu': 'Photos',
+        'restaurant.tab.reviews': 'Feedback',
+        'restaurant.about.title': 'Details',
+        'restaurant.about.no_desc': 'No description available for this place.',
+        'restaurant.details': 'Information',
+        'restaurant.details.address': 'Location',
+        'restaurant.details.phone': 'Phone',
+        'restaurant.signin_required': 'Sign in required',
+        'restaurant.signin_favorites': 'Please sign in to save discoveries.',
+        'restaurant.removed_favorites': 'Removed from your discoveries',
+        'restaurant.added_favorites': 'Saved to your discoveries',
+        'restaurant.signin_review': 'Sign in to share your experience',
+        'restaurant.no_reviews': 'No reviews yet. Be the first to tell others about this place!',
+        'profile.title': 'My Profile',
+        'profile.subtitle': 'Update your personal information',
+        'profile.name': 'Full Name',
+        'profile.avatar': 'Profile Picture',
+        'profile.save': 'Save Changes',
+        'profile.saved': 'Profile updated successfully!',
+        'nav.profile': 'My Profile',
+        'index.nearby.title': 'Near You',
+        'index.nearby.subtitle': 'The best spots within your reach',
+        'category.nearby.title': 'Nearby in this Category',
+        'category.found_one': '1 place found',
+        'category.found_many': '{{count}} places found',
+        'category.no_restaurants': 'No places found in this category yet.',
+        'category.search_in': 'Search in',
+        'category.not_found': 'Category Not Found',
+        'category.go_home': 'Back to Home',
+        'category.back': 'Back',
+        'favorites.title': 'My Discoveries',
+        'favorites.subtitle': "Places you've saved for later",
+        'favorites.empty.title': 'No discoveries yet',
+        'favorites.empty.desc': 'Start exploring Kurdistan and save your favorite spots',
+        'favorites.empty.btn': 'Start your Search',
+        'notfound.title': '404',
+        'notfound.desc': 'This spot does not exist on our map!',
+        'notfound.return': 'Go back home',
+        'review.write': 'Write a Review',
+        'review.your_rating': 'Your Rating',
+        'review.your_review': 'Your Review (optional)',
+        'review.placeholder': 'Share your experience...',
+        'review.add_photos': 'Add Photos',
+        'review.submitting': 'Submitting...',
+        'review.submit': 'Submit Review',
+        'review.rating_required': 'Rating required',
+        'review.rating_required_desc': 'Please select a rating before submitting.',
+        'review.signin_required': 'Sign in required',
+        'review.signin_required_desc': 'Please sign in to leave a review.',
+        'review.submitted': 'Review submitted!',
+        'review.thank_you': 'Thank you for your feedback.',
+        'review.error': 'Error',
+        'review.error_desc': 'Failed to submit review.',
+        'review.upload_error': 'Error uploading photos',
+        'review.upload_error_desc': 'Failed to upload one or more images.',
+        'review.warning': 'Warning',
+        'review.photo_warning': 'Review posted, but some photos might not have linked.',
+        'placeholder.email': 'you@example.com',
+        'placeholder.password': '••••••••',
+        'placeholder.name': 'John Doe',
+        'placeholder.image_url': 'Or paste image URL',
+        'categories.explore_provinces': 'Explore Provinces',
+        'categories.select_province': 'Select a province to discover its culinary delights.',
+        'categories.no_provinces': 'No Provinces Found',
+        'categories.no_provinces_desc': 'There are no categories marked as "Province" yet.',
+        'categories.go_admin': 'Go to Admin Dashboard',
+        // Major Provinces
+        'province.erbil': 'Erbil',
+        'province.duhok': 'Duhok',
+        'province.silemani': 'Sulaymaniyah',
+        'province.sulaymaniyah': 'Sulaymaniyah',
+        'province.halabja': 'Halabja',
+        // Cities and Districts
+        'province.khabat': 'Khabat',
+        'province.kalak': 'Kalak',
+        'province.zakho': 'Zakho',
+        'province.akre': 'Akre',
+        'province.soran': 'Soran',
+        'province.shaqlawa': 'Shaqlawa',
+        'province.koya': 'Koya',
+        'province.ranya': 'Ranya',
+        'province.chamchamal': 'Chamchamal',
+        'province.kifri': 'Kifri',
+        'province.garmian': 'Garmian',
+        'province.raparin': 'Raparin',
+    },
+    ku: {
+        'nav.home': 'سەرەکی',
+        'nav.categories': 'شوێنەکان',
+        'nav.nearby': 'نزیک من',
+        'nav.favorites': 'پاشەکەوتکراوەکان',
+        'nav.signin': 'چوونەژوورەوە',
+        'nav.signout': 'چوونەدەرەوە',
+        'nav.admin': 'پنێڵی ئەدمین',
+        'nav.subtitle.premium': 'باشترینەکانی کوردستان بدۆزەرەوە',
+        'categories.title': 'کۆکراوە تایبەتەکان',
+        'categories.subtitle': 'باشترین شوێنەکان بەپێی جۆر و خواستی تۆ',
+        'hero.badge': 'شوێنی دڵخوازی داهاتووت بدۆزەرەوە',
+        'hero.title.part1': 'دۆزینەوەی',
+        'hero.title.part2': 'شوێنەکان',
+        'hero.desc.premium': 'گەورەترین ڕێبەری کوردی بۆ دۆزینەوەی ناوازەترین و سەرنجڕاکێشترین شوێنەکانی کوردستان.',
+        'hero.locating': 'گەڕان بۆ شوێنەکان...',
+        'hero.collections': 'شوێنەکان',
+        'hero.stats.diners': 'کۆمەڵگەی گەڕیدەکان',
+        'hero.stats.rating': 'بەرزترین نرخاندنەکان',
+        'index.provinces.title': 'گەڕان بەپێی پارێزگان',
+        'index.provinces.subtitle': 'باشترین شوێنەکان لە شارەکەت بدۆزەرەوە',
+        'index.explore.title': 'گەڕان بەپێی جۆر',
+        'index.explore.subtitle': 'گونجاوترین شوێن بەپێی ویستت بدۆزەرەوە',
+        'index.explore.desc.premium': 'لە سروشتە ناوازەکانەوە تا شوێنە گەشتیارییەکان، هەمووی لێرە ببینە.',
+        'index.view_all': 'زیاتر ببینە',
+        'index.featured.title': 'شوێنە هەڵبژێردراوەکان',
+        'index.no_results': 'هیچ چێشتخانەیەک نەدۆزرایەوە. دواتر هەوڵ بدەرەوە!',
+        'index.cta.title.premium': 'ئامادەیت بۆ دەسپێکردنی گەشتێکی بەتام؟',
+        'index.cta.desc.premium': 'ئەمڕۆ پەیوەندی بە کۆمەڵگاکەمانەوە بکە و پێشنیاری تایبەت وەربگرە.',
+        'index.cta.btn': 'بە خۆڕایی دەست پێ بکە',
+        'categories.badge.premium': 'کۆکراوە هەڵبژێردراوەکان',
+        'nearby.badge.premium': 'زانیاری شوێن',
+        'nearby.title': 'شوێنە نزیکەکان',
+        'favorites.badge.premium': 'کۆکراوەی کەسی',
+        'auth.badge.premium': 'چوونەژوورەوەی تایبەت',
+        'auth.signin_failed': 'چوونەژوورەوە سەرکەوتوو نەبوو',
+        'auth.invalid_credentials': 'ئیمەیڵ یان وشەی نهێنی هەڵەیە. تکایە دووبارە هەوڵ بدەرەوە.',
+        'auth.welcome_back': 'بەخێربێیتەوە!',
+        'auth.signin_success': 'بە سەرکەوتوویی چوویتە ژوورەوە.',
+        'auth.error': 'هەڵە',
+        'auth.generic_error': 'هەڵەیەک ڕوویدا. تکایە دووبارە هەوڵ بدەرەوە.',
+        'auth.account_exists': 'هەژمار بوونی هەیە',
+        'auth.email_exists': 'هەژمارێک بەم ئیمەیڵە تۆمارکراوە. تکایە بچۆ ژوورەوە.',
+        'auth.account_created': 'هەژمار دروستکرا!',
+        'auth.welcome_new': 'بەخێربێیت بۆ شوێنەکانی کوردستان.',
+        'auth.discover_local': 'چێشتخانە خۆماڵییەکان بدۆزەرەوە',
+        'auth.tab.signin': 'چوونەژوورەوە',
+        'auth.tab.signup': 'تۆمارکردن',
+        'auth.email': 'ئیمەیڵ',
+        'auth.password': 'وشەی نهێنی',
+        'auth.fullname': 'ناوی تەواو',
+        'auth.btn.signing_in': 'پیرۆسەی چوونەژوور...',
+        'auth.btn.signin': 'چوونەژوورەوە',
+        'auth.btn.creating': 'دروستکردنی هەژمار...',
+        'auth.btn.create': 'هەژمار دروست بکە',
+        'auth.val.email': 'تکایە ئیمەیڵێکی دروست بنووسە',
+        'auth.val.password': 'وشەی نهێنی دەبێت لانیکەم ٦ پیت بێت',
+        'auth.forgot_password': 'وشەی نهێنیت لەبیرچووە؟',
+        'auth.reset_password': 'گۆڕینی وشەی نهێنی',
+        'auth.reset_link_sent': 'لینکی گۆڕین نێردرا! ئیمەیڵەکەت بپشکنە.',
+        'auth.back_to_signin': 'گەڕانەوە بۆ چوونەژوورەوە',
+        'auth.send_reset': 'ناردنی لینکی گۆڕین',
+        'auth.new_password': 'وشەی نهێنی نوێ',
+        'auth.update_password': 'وشەی نهێنی نوێ بکەرەوە',
+        'auth.password_updated': 'وشەی نهێنی بە سەرکەوتوویی نوێکرایەوە!',
+        'nearby.detected': 'شوێن دیاریکرا',
+        'nearby.enable': 'شوێن چالاک بکە',
+        'nearby.finding': 'دیاریکردنی شوێن...',
+        'nearby.error': 'نەتوانرا شوێنەکەت دیاری بکرێت. تکایە ڕێگە بە شوێن بدە.',
+        'nearby.subtitle.location': 'چێشتخانەکان بەپێی شوێنی ئێستات بدۆزەرەوە',
+        'nearby.subtitle.no_location': 'بۆ دۆزینەوەی چێشتخانە نزیکەکان ڕێگە بە شوێن بدە',
+        'error.geo.unsupported': 'ئەم وێبگەڕە پشتگیری دیاریکردنی شوێن ناکات',
+        'restaurant.not_found': 'چێشتخانە نەدۆزرایەوە',
+        'restaurant.back': 'گەڕانەوە',
+        'restaurant.reviews': 'پێداچوونەوە',
+        'restaurant.review': 'پێداچوونەوە',
+        'restaurant.call': 'پەیوەندی بە چێشتخانە',
+        'restaurant.directions': 'ڕێنمایی شوێن',
+        'restaurant.tab.about': 'دەربارە',
+        'restaurant.tab.menu': 'مینیو',
+        'restaurant.tab.reviews': 'پێداچوونەوەکان',
+        'restaurant.about.title': 'دەربارە',
+        'restaurant.about.no_desc': 'هیچ زانیارییەک بەردەست نییە.',
+        'restaurant.details': 'وردەکارییەکان',
+        'restaurant.details.address': 'ناونیشان',
+        'restaurant.details.phone': 'ژمارەی تەلەفۆن',
+        'restaurant.signin_required': 'پێویستە بچیتە ژوورەوە',
+        'restaurant.signin_favorites': 'تکایە بچۆ ژوورەوە بۆ هەڵگرتنی دڵخوازەکان.',
+        'restaurant.removed_favorites': 'لە دڵخوازەکان سڕایەوە',
+        'restaurant.added_favorites': 'زیادکرا بۆ دڵخوازەکان',
+        'restaurant.signin_review': 'بچۆ ژوورەوە بۆ نووسینی پەیام',
+        'restaurant.no_reviews': 'هیچ پەیامێک نییە. یەکەم کەس بە بۆ نووسینی ئەزموونەکەت!',
+        'profile.title': 'پڕۆفایلەکەم',
+        'profile.subtitle': 'زانیارییەکانت نوێ بکەرەوە',
+        'profile.name': 'ناوی تەواو',
+        'profile.avatar': 'وێنەی پڕۆفایل',
+        'profile.save': 'هەڵگرتنی گۆڕانکارییەکان',
+        'profile.saved': 'پڕۆفایل بە سەرکەوتوویی نوێکرایەوە!',
+        'nav.profile': 'پڕۆفایلەکەم',
+        'index.nearby.title': 'نزیک تۆ',
+        'index.nearby.subtitle': 'باشترین شوێنەکان لە دەوروبەرت',
+        'category.nearby.title': 'نزیکەکان لەم هاوپۆلەدا',
+        'category.found_one': '١ شوێن دۆزرایەوە',
+        'category.found_many': '{{count}} شوێن دۆزرانەوە',
+        'category.no_restaurants': 'هیچ شوێنێک لەم هاوپۆلەدا نییە.',
+        'category.search_in': 'گەڕان لەناو',
+        'category.not_found': 'هاوپۆلەکە نەدۆزرایەوە',
+        'category.go_home': 'گەڕانەوە بۆ سەرەکی',
+        'category.back': 'گەڕانەوە',
+        'favorites.title': 'دڵخوازەکان',
+        'favorites.subtitle': 'چێشتخانە هەڵگیراوەکانت',
+        'favorites.empty.title': 'هیچ دڵخوازێک نییە',
+        'favorites.empty.desc': 'دەست بکە بە گەڕان بۆ هەڵگرتنی چێشتخانەکان',
+        'favorites.empty.btn': 'گەڕانی چێشتخانەکان',
+        'notfound.title': '٤٠٤',
+        'notfound.desc': 'ئۆپس! ئەم پەڕەیە نەدۆزرایەوە',
+        'notfound.return': 'گەڕانەوە بۆ سەرەکی',
+        'review.write': 'پێداچوونەوە بنووسە',
+        'review.your_rating': 'نرخاندنەکەت',
+        'review.your_review': 'پێداچوونەوەکەت (دڵخواز)',
+        'review.placeholder': 'ئەزموونەکەت بڵاو بکەرەوە...',
+        'review.add_photos': 'وێنە زیاد بکە',
+        'review.submitting': 'ناردن...',
+        'review.submit': 'پێداچوونەوە بنێرە',
+        'review.rating_required': 'نرخاندن پێویستە',
+        'review.rating_required_desc': 'تکایە نرخاندنێک هەڵبژێرە پێش ناردن.',
+        'review.signin_required': 'پێویستە بچیتە ژوورەوە',
+        'review.signin_required_desc': 'تکایە بچۆ ژوورەوە بۆ نووسینی پێداچوونەوە.',
+        'review.submitted': 'پێداچوونەوە نێردرا!',
+        'review.thank_you': 'سوپاس بۆ بەشداریکردنت.',
+        'review.error': 'هەڵە',
+        'review.error_desc': 'نەتوانرا پێداچوونەوە بنێردرێت.',
+        'review.upload_error': 'هەڵە لە بارکردنی وێنەکان',
+        'review.upload_error_desc': 'نەتوانرا یەک یان چەند وێنەیەک بار بکرێت.',
+        'review.warning': 'ئاگاداری',
+        'review.photo_warning': 'پێداچوونەوە نێردرا، بەڵام هەندێک وێنە لەوانەیە بەستراو نەبن.',
+        'placeholder.email': 'ئیمەیڵەکەت@نموونە.com',
+        'placeholder.password': '••••••••',
+        'placeholder.name': 'ناوی تەواو',
+        'placeholder.image_url': 'یان لینکی وێنە بنووسە',
+        'categories.explore_provinces': 'گەڕان بەپێی پارێزگاکان',
+        'categories.select_province': 'پارێزگایەک هەڵبژێرە بۆ دۆزینەوەی شوێنەکانی.',
+        'categories.no_provinces': 'هیچ پارێزگایەک نییە',
+        'categories.no_provinces_desc': 'هیچ هاوپۆلێک وەک "پارێزگا" دیاری نەکراوە.',
+        'categories.go_admin': 'چوون بۆ پنێڵی ئەدمین',
+        // پارێزگا گەورەکان
+        'province.erbil': 'هەولێر',
+        'province.duhok': 'دهۆک',
+        'province.silemani': 'سلێمانی',
+        'province.sulaymaniyah': 'سلێمانی',
+        'province.halabja': 'هەڵەبجە',
+        // شار و قەزاکان
+        'province.khabat': 'خەبات',
+        'province.kalak': 'کەلەک',
+        'province.zakho': 'زاخۆ',
+        'province.akre': 'ئاکرێ',
+        'province.soran': 'سۆران',
+        'province.shaqlawa': 'شەقڵاوە',
+        'province.koya': 'کۆیە',
+        'province.ranya': 'ڕانیە',
+        'province.chamchamal': 'چەمچەماڵ',
+        'province.kifri': 'کفری',
+        'province.garmian': 'گەرمیان',
+        'province.raparin': 'ڕاپەڕین',
+    },
+    ar: {
+        'nav.home': 'الرئيسية',
+        'nav.categories': 'الفئات',
+        'nav.nearby': 'بالقرب مني',
+        'nav.favorites': 'المفضلات',
+        'nav.signin': 'تسجيل الدخول',
+        'nav.signout': 'تسجيل الخروج',
+        'nav.admin': 'لوحة المسؤول',
+        'nav.subtitle.premium': 'اكتشف روعة كردستان',
+        'categories.title': 'مجموعات مختارة',
+        'categories.subtitle': 'استكشف أفضل الأماكن حسب الفئة والمزاج',
+        'hero.badge': 'اكتشف وجهتك المفضلة التالية',
+        'hero.title.part1': 'اكتشف أروع',
+        'hero.title.part2': 'الأماكن',
+        'hero.desc.premium': 'دليلك الشامل لاستكشاف أجمل الوجهات في كردستان، من الجواهر المخفية إلى الأماكن الشهيرة.',
+        'hero.locating': 'جاري تحديد الموقع...',
+        'hero.collections': 'المجموعات',
+        'hero.stats.diners': 'مجتمع المستكشفين',
+        'hero.stats.rating': 'أماكن الأعلى تقييماً',
+        'index.provinces.title': 'استكشف حسب المحافظة',
+        'index.provinces.subtitle': 'اكتشف أفضل الأماكن في مدينتك',
+        'index.explore.title': 'استكشف حسب الفئة',
+        'index.explore.subtitle': 'اعثر على المكان المثالي لمزاجك',
+        'index.explore.desc.premium': 'من الأكشاك الشعبية إلى المطاعم الفاخرة، استكشف المشهد المتنوع لمطاعم كردستان.',
+        'index.view_all': 'عرض الكل ←',
+        'index.featured.title': 'وجهات مختارة',
+        'index.no_results': 'لم يتم العثور على أماكن. تحقق مرة أخرى قريبا!',
+        'index.cta.title.premium': 'هل أنت مستعد لبدء رحلتك؟',
+        'index.cta.desc.premium': 'انضم إلى مجتمعنا اليوم واحصل على توصيات مخصصة.',
+        'index.cta.btn': 'ابدأ الاستكشاف',
+        'categories.badge.premium': 'وجهات مميزة',
+        'nearby.badge.premium': 'استكشف ما حولك',
+        'nearby.title': 'الأماكن القريبة',
+        'favorites.badge.premium': 'المجموعة الشخصية',
+        'auth.badge.premium': 'انضم إلى رحلة الاستكشاف',
+        'auth.signin_failed': 'فشل تسجيل الدخول',
+        'auth.invalid_credentials': 'البريد الإلكتروني أو كلمة المرور غير صالحة. حاول مرة اخرى.',
+        'auth.welcome_back': 'مرحبًا بعودتك!',
+        'auth.signin_success': 'لقد قمت بتسجيل الدخول بنجاح.',
+        'auth.error': 'خطأ',
+        'auth.generic_error': 'حدث خطأ ما. حاول مرة اخرى.',
+        'auth.account_exists': 'الحساب موجود',
+        'auth.email_exists': 'حساب بهذا البريد الإلكتروني موجود بالفعل. الرجاء تسجيل الدخول بدلا من ذلك.',
+        'auth.account_created': 'تم إنشاء الحساب!',
+        'auth.welcome_new': 'مرحبا بكم في أماكن كردستان.',
+        'auth.discover_local': 'اكتشف المطاعم المحلية',
+        'auth.tab.signin': 'تسجيل الدخول',
+        'auth.tab.signup': 'اشتراك',
+        'auth.email': 'بريد إلكتروني',
+        'auth.password': 'كلمة المرور',
+        'auth.fullname': 'الاسم الكامل',
+        'auth.btn.signing_in': 'جاري تسجيل الدخول...',
+        'auth.btn.signin': 'تسجيل الدخول',
+        'auth.btn.creating': 'إنشاء حساب...',
+        'auth.btn.create': 'إنشاء حساب',
+        'auth.val.email': 'الرجاء إدخال عنوان بريد إلكتروني صالح',
+        'auth.val.password': 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل',
+        'auth.forgot_password': 'هل نسيت كلمة السر؟',
+        'auth.reset_password': 'إعادة تعيين كلمة المرور',
+        'auth.reset_link_sent': 'تم إرسال رابط إعادة التعيين! تحقق من بريدك الإلكتروني.',
+        'auth.back_to_signin': 'العودة لتسجيل الدخول',
+        'auth.send_reset': 'إرسال رابط إعادة التعيين',
+        'auth.new_password': 'كلمة مرور جديدة',
+        'auth.update_password': 'تحديث كلمة المرور',
+        'auth.password_updated': 'تم تحديث كلمة المرور بنجاح!',
+        'nearby.detected': 'تم تحديد الموقع',
+        'nearby.enable': 'تفعيل الموقع',
+        'nearby.finding': 'جاري تحديد موقعك...',
+        'nearby.error': 'تعذر استرداد موقعك. الرجاء تمكين الوصول إلى الموقع.',
+        'nearby.subtitle.location': 'اكتشف المطاعم بناءً على موقعك الحالي',
+        'nearby.subtitle.no_location': 'قم بتمكين الوصول إلى الموقع للعثور على المطاعم القريبة منك',
+        'error.geo.unsupported': 'خيار تحديد الموقع غير مدعوم في متصفحك',
+        'restaurant.not_found': 'المطعم غير موجود',
+        'restaurant.back': 'عودة',
+        'restaurant.reviews': 'المراجعات',
+        'restaurant.review': 'مراجعة',
+        'restaurant.call': 'اتصل بالمطعم',
+        'restaurant.directions': 'الحصول على الاتجاهات',
+        'restaurant.tab.about': 'نبذة',
+        'restaurant.tab.menu': 'القائمة',
+        'restaurant.tab.reviews': 'المراجعات',
+        'restaurant.about.title': 'نبذة',
+        'restaurant.about.no_desc': 'لا يوجد وصف متاح.',
+        'restaurant.details': 'التفاصيل',
+        'restaurant.details.address': 'العنوان',
+        'restaurant.details.phone': 'الهاتف',
+        'restaurant.signin_required': 'تسجيل الدخول مطلوب',
+        'restaurant.signin_favorites': 'الرجاء تسجيل الدخول لحفظ المفضلة.',
+        'restaurant.removed_favorites': 'تمت الإزالة من المفضلة',
+        'restaurant.added_favorites': 'تمت الإضافة إلى المفضلة',
+        'restaurant.signin_review': 'تسجيل الدخول لترك مراجعة',
+        'restaurant.no_reviews': 'لا توجد مراجعات بعد. كن أول من يشارك تجربتك!',
+        'profile.title': 'ملفي الشخصي',
+        'profile.subtitle': 'تحديث معلوماتك الشخصية',
+        'profile.name': 'الاسم الكامل',
+        'profile.avatar': 'صورة الملف الشخصي',
+        'profile.save': 'حفظ التغييرات',
+        'profile.saved': 'تم تحديث الملف الشخصي بنجاح!',
+        'nav.profile': 'ملفي الشخصي',
+        'index.nearby.title': 'بالقرب منك',
+        'index.nearby.subtitle': 'أفضل الأماكن القريبة منك',
+        'category.nearby.title': 'بالقرب منك في هذه الفئة',
+        'category.found_one': 'تم العثور على مكان واحد',
+        'category.found_many': 'تم العثور على {{count}} أماكن',
+        'category.no_restaurants': 'لا توجد أماكن في هذه الفئة بعد.',
+        'category.search_in': 'ابحث في',
+        'category.not_found': 'الفئة غير موجودة',
+        'category.go_home': 'العودة للرئيسية',
+        'category.back': 'عودة',
+        'favorites.title': 'المفضلة',
+        'favorites.subtitle': 'المطاعم التي حفظتها',
+        'favorites.empty.title': 'لا توجد مفضلات بعد',
+        'favorites.empty.desc': 'ابدأ الاستكشاف واحفظ مطاعمك المفضلة',
+        'favorites.empty.btn': 'استكشف المطاعم',
+        'notfound.title': '٤٠٤',
+        'notfound.desc': 'عفوا! الصفحة غير موجودة',
+        'notfound.return': 'العودة للصفحة الرئيسية',
+        'review.write': 'اكتب مراجعة',
+        'review.your_rating': 'تقييمك',
+        'review.your_review': 'مراجعتك (اختياري)',
+        'review.placeholder': 'شارك تجربتك...',
+        'review.add_photos': 'إضافة صور',
+        'review.submitting': 'جاري الإرسال...',
+        'review.submit': 'إرسال المراجعة',
+        'review.rating_required': 'التقييم مطلوب',
+        'review.rating_required_desc': 'الرجاء تحديد تقييم قبل الإرسال.',
+        'review.signin_required': 'تسجيل الدخول مطلوب',
+        'review.signin_required_desc': 'الرجاء تسجيل الدخول لترك مراجعة.',
+        'review.submitted': 'تم إرسال المراجعة!',
+        'review.thank_you': 'شكراً لك على ملاحظاتك.',
+        'review.error': 'خطأ',
+        'review.error_desc': 'فشل إرسال المراجعة.',
+        'review.upload_error': 'خطأ في تحميل الصور',
+        'review.upload_error_desc': 'فشل تحميل صورة واحدة أو أكثر.',
+        'review.warning': 'تحذير',
+        'review.photo_warning': 'تم نشر المراجعة، لكن بعض الصور قد لا تكون مرتبطة.',
+        'placeholder.email': 'you@example.com',
+        'placeholder.password': '••••••••',
+        'placeholder.name': 'الاسم الكامل',
+        'placeholder.image_url': 'أو الصق رابط الصورة',
+        'categories.explore_provinces': 'استكشف المحافظات',
+        'categories.select_province': 'اختر محافظة لاكتشاف أفضل الأماكن.',
+        'categories.no_provinces': 'لا توجد محافظات',
+        'categories.no_provinces_desc': 'لا توجد فئات محددة ك"محافظة" بعد.',
+        'categories.go_admin': 'انتقل إلى لوحة الإدارة',
+        // المحافظات الرئيسية
+        'province.erbil': 'أربيل',
+        'province.duhok': 'دهوك',
+        'province.silemani': 'السليمانية',
+        'province.sulaymaniyah': 'السليمانية',
+        'province.halabja': 'حلبجة',
+        // المدن والأقضية
+        'province.khabat': 'خبات',
+        'province.kalak': 'كلك',
+        'province.zakho': 'زاخو',
+        'province.akre': 'عقرة',
+        'province.soran': 'سوران',
+        'province.shaqlawa': 'شقلاوة',
+        'province.koya': 'كويسنجق',
+        'province.ranya': 'رانية',
+        'province.chamchamal': 'جمجمال',
+        'province.kifri': 'كفري',
+        'province.garmian': 'كرميان',
+        'province.raparin': 'رابرين',
+    },
+};
+
+// Utility function to convert Western numerals to Arabic/Kurdish numerals
+const toLocalizedNumerals = (num: number, language: Language): string => {
+    const numStr = num.toString();
+
+    if (language === 'ar') {
+        // Arabic-Indic numerals
+        const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        return numStr.replace(/\d/g, (digit) => arabicNumerals[parseInt(digit)]);
+    } else if (language === 'ku') {
+        // Kurdish uses Arabic-Indic numerals (same as Arabic)
+        const kurdishNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+        return numStr.replace(/\d/g, (digit) => kurdishNumerals[parseInt(digit)]);
+    }
+
+    return numStr; // English uses Western numerals
+};
+
+// Detect browser language preference
+const detectBrowserLanguage = (): Language => {
+    const browserLang = navigator.language.toLowerCase();
+
+    if (browserLang.startsWith('ar')) return 'ar';
+    if (browserLang.startsWith('ku') || browserLang.startsWith('ckb')) return 'ku';
+
+    return 'en'; // Default to English
+};
+
+export function LanguageProvider({ children }: { children: React.ReactNode }) {
+    const [language, setLanguage] = useState<Language>(() => {
+        const saved = localStorage.getItem('language');
+        if (saved && ['en', 'ku', 'ar'].includes(saved)) {
+            return saved as Language;
+        }
+        // If no saved preference, detect from browser
+        return detectBrowserLanguage();
+    });
+
+    const dir = language === 'en' ? 'ltr' : 'rtl';
+    const isRTL = dir === 'rtl';
+
+    useEffect(() => {
+        localStorage.setItem('language', language);
+        document.documentElement.dir = dir;
+        document.documentElement.lang = language;
+    }, [language, dir]);
+
+    // Translation function with interpolation support
+    const t = (key: string, params?: Record<string, string | number>) => {
+        let translation = translations[language][key];
+
+        // Fallback to English if translation not found
+        if (!translation) {
+            translation = translations['en'][key] || key;
+        }
+
+        // Replace parameters like {{count}}, {{name}}, etc.
+        if (params) {
+            Object.keys(params).forEach((paramKey) => {
+                const value = params[paramKey];
+                const displayValue = typeof value === 'number'
+                    ? toLocalizedNumerals(value, language)
+                    : value;
+                translation = translation.replace(`{{${paramKey}}}`, String(displayValue));
+            });
+        }
+
+        return translation;
+    };
+
+    // Format numbers according to language
+    const formatNumber = (num: number): string => {
+        return toLocalizedNumerals(num, language);
+    };
+
+    // Format dates according to language
+    const formatDate = (date: Date, formatStr: string = 'PPP'): string => {
+        // For now, use English formatting for all languages
+        // In the future, we can add locale-specific date-fns locales
+        const formattedDate = format(date, formatStr);
+
+        // Convert numerals in the date string to localized numerals
+        if (language === 'ar' || language === 'ku') {
+            return formattedDate.replace(/\d/g, (digit) => {
+                const arabicNumerals = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩'];
+                return arabicNumerals[parseInt(digit)];
+            });
+        }
+
+        return formattedDate;
+    };
+
+    // Translate category/province names from database
+    const translateCategoryName = (name: string): string => {
+        // Convert to lowercase and create a key
+        const key = `province.${name.toLowerCase().replace(/\s+/g, '_')}`;
+
+        // Try to find translation
+        const translation = translations[language][key];
+        if (translation) return translation;
+
+        // Fallback to original name
+        return name;
+    };
+
+    return (
+        <LanguageContext.Provider value={{
+            language,
+            setLanguage,
+            dir,
+            t,
+            formatNumber,
+            formatDate,
+            isRTL,
+            translateCategoryName
+        }}>
+            {children}
+        </LanguageContext.Provider>
+    );
+}
+
+export function useLanguage() {
+    const context = useContext(LanguageContext);
+    if (context === undefined) {
+        throw new Error('useLanguage must be used within a LanguageProvider');
+    }
+    return context;
+}
+
