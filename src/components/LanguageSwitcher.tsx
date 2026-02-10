@@ -12,9 +12,9 @@ export function LanguageSwitcher() {
     const { language, setLanguage, isRTL } = useLanguage();
 
     const languages = [
-        { code: 'en', label: 'English', native: 'English', short: 'EN', dir: 'ltr' },
-        { code: 'ku', label: 'Kurdish', native: 'کوردی', short: 'KU', dir: 'rtl' },
-        { code: 'ar', label: 'Arabic', native: 'العربية', short: 'AR', dir: 'rtl' },
+        { code: 'en', label: 'English', native: 'EN', short: 'EN', dir: 'ltr' },
+        { code: 'ku', label: 'Kurdish', native: 'KU', short: 'KU', dir: 'ltr' },
+        { code: 'ar', label: 'Arabic', native: 'AR', short: 'AR', dir: 'ltr' },
     ] as const;
 
     const currentLang = languages.find(l => l.code === language);
@@ -41,7 +41,7 @@ export function LanguageSwitcher() {
                             }`}
                         dir={lang.dir}
                     >
-                        <span className={lang.dir === 'rtl' ? 'font-semibold' : ''}>{lang.native}</span>
+                        <span>{lang.native}</span>
                         {language === lang.code && (
                             <span className="text-xs opacity-60">✓</span>
                         )}
