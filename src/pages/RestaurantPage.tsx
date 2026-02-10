@@ -16,6 +16,8 @@ import {
   Heart,
   Clock,
   ExternalLink,
+  Facebook,
+  Instagram,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
@@ -42,6 +44,9 @@ interface Restaurant {
   longitude: number | null;
   category_id: string | null;
   opening_hours: string | null;
+  tiktok_url?: string | null;
+  facebook_url?: string | null;
+  instagram_url?: string | null;
 }
 
 interface MenuItem {
@@ -136,6 +141,7 @@ const RestaurantPage = () => {
       .single();
 
     if (restaurantData) {
+      console.log('Restaurant Data Loaded:', restaurantData);
       setRestaurant(restaurantData);
 
       const { data: menuData } = await (supabase as any)
@@ -320,6 +326,51 @@ const RestaurantPage = () => {
                   <Clock className="w-5 h-5" />
                   <span className="font-bold tracking-tight">{restaurant.opening_hours || t('restaurant.default_hours')}</span>
                 </div>
+
+                {/* Social Media Links */}
+                {/* Social Media Links */}
+                {(restaurant.tiktok_url || restaurant.facebook_url || restaurant.instagram_url) && (
+                  <>
+                    <div className="hidden md:block w-px h-8 bg-white/20" />
+                    <div className="flex items-center gap-3">
+                      {restaurant.tiktok_url && (
+                        <a
+                          href={restaurant.tiktok_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-black hover:bg-black/80 text-white p-2.5 rounded-full transition-all hover:scale-110 shadow-lg"
+                          aria-label="TikTok"
+                        >
+                          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
+                          </svg>
+                        </a>
+                      )}
+                      {restaurant.facebook_url && (
+                        <a
+                          href={restaurant.facebook_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-[#1877F2] hover:bg-[#1877F2]/90 text-white p-2.5 rounded-full transition-all hover:scale-110 shadow-lg"
+                          aria-label="Facebook"
+                        >
+                          <Facebook className="w-5 h-5 fill-current" />
+                        </a>
+                      )}
+                      {restaurant.instagram_url && (
+                        <a
+                          href={restaurant.instagram_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] hover:opacity-90 text-white p-2.5 rounded-full transition-all hover:scale-110 shadow-lg"
+                          aria-label="Instagram"
+                        >
+                          <Instagram className="w-5 h-5" />
+                        </a>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>

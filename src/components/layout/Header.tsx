@@ -55,15 +55,15 @@ export function Header() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 md:gap-3 group">
-            <div className="w-8 h-8 md:w-12 md:h-12 bg-primary flex items-center justify-center rounded-xl md:rounded-2xl shadow-lg shadow-primary/20 transition-all duration-500">
-              <MapPin className="w-4 h-4 md:w-6 md:h-6 text-white" />
+          <Link to="/" className="flex items-center gap-3 md:gap-4 group">
+            <div className="w-10 h-10 md:w-14 md:h-14 bg-primary flex items-center justify-center rounded-xl md:rounded-2xl shadow-lg shadow-primary/20 transition-all duration-500 group-hover:scale-105">
+              <MapPin className="w-5 h-5 md:w-7 md:h-7 text-white" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-sm md:text-2xl font-black tracking-tight text-foreground transition-colors group-hover:text-primary leading-none">
+              <h1 className="text-xl md:text-3xl font-black tracking-tighter text-foreground transition-colors group-hover:text-primary leading-none">
                 KURDISTAN<span className="text-primary">PLACES</span>
               </h1>
-              <span className="hidden md:block text-[9px] uppercase tracking-[0.4em] font-black text-muted-foreground mt-1.5 transition-colors">
+              <span className="hidden md:block text-[10px] uppercase tracking-[0.4em] font-black text-muted-foreground mt-1 transition-colors">
                 {t('nav.subtitle.premium')}
               </span>
             </div>

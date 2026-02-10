@@ -56,6 +56,26 @@
   /* RTL Support */
   [dir="rtl"] {
     text-align: right;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    /* Better font for Kurdish/Arabic */
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    line-height: 1.5;
+    /* Increased line height for taller glyphs */
+    font-family: 'Tahoma', 'Arial', sans-serif;
+  }
+
+  [dir="rtl"] p,
+  [dir="rtl"] span,
+  [dir="rtl"] a,
+  [dir="rtl"] button {
+    line-height: 1.6;
   }
 
   [dir="rtl"] .text-left {
@@ -98,6 +118,13 @@
     h6 {
       line-height: 1.3;
       margin-bottom: 0.5rem;
+    }
+
+    [dir="rtl"] h1,
+    [dir="rtl"] h2,
+    [dir="rtl"] h3 {
+      line-height: 1.6;
+      /* Even more breathing room for headings on mobile */
     }
 
     p {

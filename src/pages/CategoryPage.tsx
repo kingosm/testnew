@@ -38,7 +38,7 @@ interface Restaurant {
 
 const CategoryPage = () => {
   const { slug } = useParams<{ slug: string }>();
-  const { t } = useLanguage();
+  const { t, translateCategoryName } = useLanguage();
   const { userLocation, isLoadingLocation, locationError, requestLocation, calculateDistance } = useLocation();
   const [category, setCategory] = useState<Category | null>(null);
   const [parentCategory, setParentCategory] = useState<Category | null>(null);
@@ -189,7 +189,7 @@ const CategoryPage = () => {
           >
             <Link to={parentCategory ? `/category/${parentCategory.slug}` : "/"}>
               <ChevronLeft className="w-4 h-4 mr-2" />
-              {t('category.back')} {parentCategory ? `to ${parentCategory.name}` : ""}
+              {t('category.back')} {parentCategory ? `to ${translateCategoryName(parentCategory.name)}` : ""}
             </Link>
           </Button>
 
@@ -198,7 +198,7 @@ const CategoryPage = () => {
           </div>
 
           <h1 className="text-5xl md:text-7xl font-black text-foreground mb-4 leading-none tracking-tighter">
-            {category.name}
+            {translateCategoryName(category.name)}
           </h1>
           {category.description && (
             <p className="text-xl md:text-2xl text-muted-foreground font-medium max-w-2xl leading-relaxed">
@@ -217,7 +217,7 @@ const CategoryPage = () => {
               <span className="place-badge mb-4">
                 {category.category_type === 'province' ? "Select a District" : category.category_type === 'district' ? "Select a Category" : "Select a Type"}
               </span>
-              <h2 className="text-4xl md:text-6xl font-black tracking-tighter">Explore {category.name}</h2>
+              <h2 className="text-4xl md:text-6xl font-black tracking-tighter">Explore {translateCategoryName(category.name)}</h2>
             </div>
 
             {subCategories.length > 0 && (
@@ -225,7 +225,7 @@ const CategoryPage = () => {
                 {subCategories.map((sub, idx) => (
                   <div key={sub.id} className="animate-reveal" style={{ animationDelay: `${idx * 0.1}s` }}>
                     <CategoryCard
-                      name={sub.name}
+                      name={translateCategoryName(sub.name)}
                       slug={sub.slug}
                       description={sub.description || undefined}
                       imageUrl={sub.image_url || undefined}

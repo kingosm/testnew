@@ -183,6 +183,81 @@ const translations: Record<Language, Record<string, string>> = {
         'province.garmian': 'Garmian',
         'province.raparin': 'Raparin',
 
+        // Verticals (Categories)
+        'category.burgers': 'Burgers',
+        'category.pizza': 'Pizza',
+        'category.fast_food': 'Fast Food',
+        'category.cafe': 'Cafe',
+        'category.coffee': 'Coffee',
+        'category.fine_dining': 'Fine Dining',
+        'category.kurdish': 'Kurdish',
+        'category.iraqi': 'Iraqi',
+        'category.breakfast': 'Breakfast',
+        'category.brunch': 'Brunch',
+        'category.desserts': 'Desserts',
+        'category.seafood': 'Seafood',
+        'category.steakhouse': 'Steakhouse',
+        'category.vegetarian': 'Vegetarian',
+        'category.vegan': 'Vegan',
+        'category.healthy': 'Healthy',
+        'category.salad': 'Salad',
+        'category.sandwich': 'Sandwich',
+        'category.shawarma': 'Shawarma',
+        'category.kebab': 'Kebab',
+        'category.grill': 'Grill',
+        'category.bbq': 'BBQ',
+        'category.fried_chicken': 'Fried Chicken',
+        'category.ice_cream': 'Ice Cream',
+        'category.juice': 'Juice',
+        'category.bakery': 'Bakery',
+        'category.pastry': 'Pastry',
+        'category.middle_eastern': 'Middle Eastern',
+        'category.international': 'International',
+        'category.traditional': 'Traditional',
+        'category.lounge': 'Lounge',
+        'category.hookah': 'Hookah',
+
+        // Districts - Erbil
+        'district.ankawa': 'Ankawa',
+        'district.dream_city': 'Dream City',
+        'district.empire_world': 'Empire World',
+        'district.royal_city': 'Royal City',
+        'district.italian_city': 'Italian City',
+        'district.english_village': 'English Village',
+        'district.vital_city': 'Vital City',
+        'district.park_view': 'Park View',
+        'district.bakhtyari': 'Bakhtyari',
+        'district.shoresh': 'Shoresh',
+        'district.brayati': 'Brayati',
+        'district.waziran': 'Waziran',
+        'district.32_park': '32 Park',
+        'district.40_meter': '40 Meter',
+        'district.60_meter': '60 Meter',
+        'district.100_meter': '100 Meter',
+        'district.120_meter': '120 Meter',
+        'district.gulan': 'Gulan',
+        'district.peshawa': 'Peshawa',
+        'district.kirkuk_road': 'Kirkuk Road',
+        'district.mosul_road': 'Mosul Road',
+        'district.majidi_mall': 'Majidi Mall',
+        'district.family_mall': 'Family Mall',
+
+        // Districts - Sulaymaniyah
+        'district.salim_street': 'Salim Street',
+        'district.saholaka': 'Saholaka',
+        'district.sarchnar': 'Sarchnar',
+        'district.tuimalik': 'Tuimalik',
+        'district.ibrahim_pasha': 'Ibrahim Pasha',
+        'district.bakrajo': 'Bakrajo',
+        'district.rapurin': 'Raparin',
+        'district.chavy_land': 'Chavy Land',
+
+        // Districts - Duhok
+        'district.kro': 'KRO',
+        'district.malta': 'Malta',
+        'district.shakhke': 'Shakhke',
+        'district.zanko': 'Zanko',
+
         // Footer
         'footer.global_discovery': 'Global Discovery',
         'footer.description': 'Mapping the finest destinations across Kurdistan. Join our world-class directory of handpicked locations and hidden gems.',
@@ -411,6 +486,81 @@ const translations: Record<Language, Record<string, string>> = {
         'province.kifri': 'کفری',
         'province.garmian': 'گەرمیان',
         'province.raparin': 'ڕاپەڕین',
+
+        // Verticals (Categories)
+        'category.burgers': 'بەرگر',
+        'category.pizza': 'پیتزا',
+        'category.fast_food': 'خواردنی خێرا',
+        'category.cafe': 'کافێ',
+        'category.coffee': 'قاوە',
+        'category.fine_dining': 'خواردنی وێستگە',
+        'category.kurdish': 'کوردی',
+        'category.iraqi': 'عێراقی',
+        'category.breakfast': 'نانی بەیانی',
+        'category.brunch': 'برەنچ',
+        'category.desserts': 'شیرینی',
+        'category.seafood': 'خواردنی دەریایی',
+        'category.steakhouse': 'ستیک هاوس',
+        'category.vegetarian': 'سەوزەخۆر',
+        'category.vegan': 'ڕووەکخۆر',
+        'category.healthy': 'تەندروست',
+        'category.salad': 'زەڵاتە',
+        'category.sandwich': 'ساندویچ',
+        'category.shawarma': 'شاوەرمە',
+        'category.kebab': 'کەباب',
+        'category.grill': 'برژاو',
+        'category.bbq': 'بابکیو',
+        'category.fried_chicken': 'مریشکی سوورەکراو',
+        'category.ice_cream': 'ئایسکرێم',
+        'category.juice': 'شەربەت',
+        'category.bakery': 'فڕن',
+        'category.pastry': 'هەویرکاری',
+        'category.middle_eastern': 'ڕۆژهەڵاتی ناوەڕاست',
+        'category.international': 'جیهانی',
+        'category.traditional': 'کەلتوری',
+        'category.lounge': 'لاونج',
+        'category.hookah': 'نێرگەلە',
+
+        // Districts - Erbil
+        'district.ankawa': 'عەنکاوە',
+        'district.dream_city': 'دریم سیتی',
+        'district.empire_world': 'ئیمپایەر وۆڵد',
+        'district.royal_city': 'ڕۆیاڵ سیتی',
+        'district.italian_city': 'سیتی ئیتاڵی',
+        'district.english_village': 'گوندی ئینگلیزی',
+        'district.vital_city': 'ڤایتاڵ سیتی',
+        'district.park_view': 'پارک ڤیو',
+        'district.bakhtyari': 'بەختیاری',
+        'district.shoresh': 'شۆڕش',
+        'district.brayati': 'براییەتی',
+        'district.waziran': 'وەزیران',
+        'district.32_park': '٣٢ پارک',
+        'district.40_meter': '٤٠ مەتری',
+        'district.60_meter': '٦٠ مەتری',
+        'district.100_meter': '١٠٠ مەتری',
+        'district.120_meter': '١٢٠ مەتری',
+        'district.gulan': 'گوڵان',
+        'district.peshawa': 'پێشەوا',
+        'district.kirkuk_road': 'ڕێگای کەرکوک',
+        'district.mosul_road': 'ڕێگای موسڵ',
+        'district.majidi_mall': 'ماجیدی مۆڵ',
+        'district.family_mall': 'فامیلی مۆڵ',
+
+        // Districts - Sulaymaniyah
+        'district.salim_street': 'شەقامی سالم',
+        'district.saholaka': 'سەهۆڵەکە',
+        'district.sarchnar': 'سەرچنار',
+        'district.tuimalik': 'تووی مەلیک',
+        'district.ibrahim_pasha': 'ئیبراهیم پاشا',
+        'district.bakrajo': 'بەکرەجۆ',
+        'district.rapurin': 'ڕاپەڕین',
+        'district.chavy_land': 'چاڤی لاند',
+
+        // Districts - Duhok
+        'district.kro': 'کەی ئاڕ ئۆ',
+        'district.malta': 'ماڵتا',
+        'district.shakhke': 'شاخکێ',
+        'district.zanko': 'زانکۆ',
 
         // Footer
         'footer.global_discovery': 'دۆزینەوەی جیهانی',
@@ -641,6 +791,81 @@ const translations: Record<Language, Record<string, string>> = {
         'province.garmian': 'كرميان',
         'province.raparin': 'رابرين',
 
+        // Verticals (Categories)
+        'category.burgers': 'برغر',
+        'category.pizza': 'بيتزا',
+        'category.fast_food': 'وجبات سريعة',
+        'category.cafe': 'مقهى',
+        'category.coffee': 'قهوة',
+        'category.fine_dining': 'مطاعم فاخرة',
+        'category.kurdish': 'كردي',
+        'category.iraqi': 'عراقي',
+        'category.breakfast': 'فطور',
+        'category.brunch': 'فطور وغداء',
+        'category.desserts': 'حلويات',
+        'category.seafood': 'مأكولات بحرية',
+        'category.steakhouse': 'ستيك هاوس',
+        'category.vegetarian': 'نباتي',
+        'category.vegan': 'نباتي صرف',
+        'category.healthy': 'صحي',
+        'category.salad': 'سلطة',
+        'category.sandwich': 'ساندويتش',
+        'category.shawarma': 'شاورما',
+        'category.kebab': 'كباب',
+        'category.grill': 'مشويات',
+        'category.bbq': 'باربيكيو',
+        'category.fried_chicken': 'دجاج مقلي',
+        'category.ice_cream': 'آيس كريم',
+        'category.juice': 'عصائر',
+        'category.bakery': 'مخبز',
+        'category.pastry': 'معجنات',
+        'category.middle_eastern': 'شرق أوسطي',
+        'category.international': 'عالمي',
+        'category.traditional': 'تقليدي',
+        'category.lounge': 'صالة',
+        'category.hookah': 'شيشة',
+
+        // Districts - Erbil
+        'district.ankawa': 'عنكاوا',
+        'district.dream_city': 'دريم سيتي',
+        'district.empire_world': 'إمباير وورلد',
+        'district.royal_city': 'رويال سيتي',
+        'district.italian_city': 'القرية الإيطالية',
+        'district.english_village': 'القرية الإنجليزية',
+        'district.vital_city': 'فيتال سيتي',
+        'district.park_view': 'بارك فيو',
+        'district.bakhtyari': 'بختياري',
+        'district.shoresh': 'شورط',
+        'district.brayati': 'برايتي',
+        'district.waziran': 'وزيران',
+        'district.32_park': '٣٢ بارك',
+        'district.40_meter': '٤٠ متري',
+        'district.60_meter': '٦٠ متري',
+        'district.100_meter': '١٠٠ متري',
+        'district.120_meter': '١٢٠ متري',
+        'district.gulan': 'جولان',
+        'district.peshawa': 'بيشوا',
+        'district.kirkuk_road': 'طريق كركوك',
+        'district.mosul_road': 'طريق الموصل',
+        'district.majidi_mall': 'ماجدي مول',
+        'district.family_mall': 'فاميلي مول',
+
+        // Districts - Sulaymaniyah
+        'district.salim_street': 'شارع سالم',
+        'district.saholaka': 'سه ولكة',
+        'district.sarchnar': 'سرجنار',
+        'district.tuimalik': 'توي ملك',
+        'district.ibrahim_pasha': 'إبراهيم باشا',
+        'district.bakrajo': 'بكرحو',
+        'district.rapurin': 'رابرين',
+        'district.chavy_land': 'جافي لاند',
+
+        // Districts - Duhok
+        'district.kro': 'كي آر أو',
+        'district.malta': 'مالطا',
+        'district.shakhke': 'شاخه كى',
+        'district.zanko': 'زانكو',
+
         // Footer
         'footer.global_discovery': 'اكتشاف عالمي',
         'footer.description': 'أفضل الوجهات في جميع أنحاء كردستان. انضم إلى دليلنا العالمي للمواقع المختارة والجواهر المخفية.',
@@ -744,7 +969,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         return detectBrowserLanguage();
     });
 
-    const dir = language === 'en' ? 'ltr' : 'rtl';
+    const dir: Direction = language === 'en' ? 'ltr' : 'rtl';
     const isRTL = dir === 'rtl';
 
     useEffect(() => {
@@ -798,40 +1023,53 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         return formattedDate;
     };
 
-    // Translate category/province names from database
+    // Enhanced category translation function
     const translateCategoryName = (name: string): string => {
-        // Convert to lowercase and create a key
-        const key = `province.${name.toLowerCase().replace(/\s+/g, '_')}`;
+        if (!name) return "";
 
-        // Try to find translation
-        const translation = translations[language][key];
+        // Normalize name: lowercase, replace spaces with underscores, remove special chars
+        const normalized = name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+
+        // Try 'category.' prefix first (for generic verticals)
+        let translation = translations[language][`category.${normalized}`];
         if (translation) return translation;
 
-        // Fallback to original name
+        // Try 'district.' prefix (for districts)
+        translation = translations[language][`district.${normalized}`];
+        if (translation) return translation;
+
+        // Try 'province.' prefix (for existing provinces - backward compatibility)
+        translation = translations[language][`province.${normalized}`];
+        if (translation) return translation;
+
+        // Return original name if not found
         return name;
     };
 
+    const value = {
+        language,
+        setLanguage,
+        dir,
+        t,
+        formatNumber,
+        formatDate,
+        isRTL,
+        translateCategoryName,
+    };
+
     return (
-        <LanguageContext.Provider value={{
-            language,
-            setLanguage,
-            dir,
-            t,
-            formatNumber,
-            formatDate,
-            isRTL,
-            translateCategoryName
-        }}>
-            {children}
+        <LanguageContext.Provider value={value}>
+            <div dir={dir} className={isRTL ? 'rtl' : 'ltr'}>
+                {children}
+            </div>
         </LanguageContext.Provider>
     );
 }
 
-export function useLanguage() {
+export const useLanguage = () => {
     const context = useContext(LanguageContext);
     if (context === undefined) {
         throw new Error('useLanguage must be used within a LanguageProvider');
     }
     return context;
-}
-
+};

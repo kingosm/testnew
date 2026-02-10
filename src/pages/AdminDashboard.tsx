@@ -51,6 +51,9 @@ interface Restaurant {
     category_id: string | null;
     is_visible: boolean;
     opening_hours: string | null;
+    tiktok_url?: string | null;
+    facebook_url?: string | null;
+    instagram_url?: string | null;
 }
 
 interface Category {
@@ -786,7 +789,6 @@ const AdminDashboard = () => {
                                                 </select>
                                             </div>
                                             <div className="space-y-2 md:col-span-2">
-                                                <Label>Image</Label>
                                                 <div className="space-y-2">
                                                     <ImageUpload
                                                         value={editingRestaurant?.image_url || null}
@@ -799,9 +801,8 @@ const AdminDashboard = () => {
                                                                 if (error) throw error;
                                                                 const { data: { publicUrl } } = supabase.storage.from('images').getPublicUrl(fileName);
                                                                 setEditingRestaurant(prev => prev ? { ...prev, image_url: publicUrl } : null);
-                                                                toast({ title: "Image uploaded successfully" });
                                                             } catch (error: any) {
-                                                                toast({ title: "Upload Failed", description: error.message, variant: "destructive" });
+                                                                toast({ title: "Upload Error", description: error.message, variant: "destructive" });
                                                             } finally {
                                                                 setIsUploading(false);
                                                             }
@@ -810,13 +811,46 @@ const AdminDashboard = () => {
                                                         isUploading={isUploading}
                                                     />
                                                     <Input
-                                                        placeholder="Or paste image URL"
+                                                        placeholder="Or enter image URL manually"
                                                         value={editingRestaurant?.image_url || ""}
                                                         onChange={(e) => setEditingRestaurant(prev => prev ? { ...prev, image_url: e.target.value } : null)}
                                                     />
                                                 </div>
                                             </div>
+                                            <div className="space-y-2">
+                                                <Label>Opening Hours</Label>
+                                                <Input
+                                                    value={editingRestaurant?.opening_hours || ""}
+                                                    onChange={(e) => setEditingRestaurant(prev => prev ? { ...prev, opening_hours: e.target.value } : null)}
+                                                    placeholder="e.g. 9:00 AM - 11:00 PM"
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>TikTok URL</Label>
+                                                <Input
+                                                    value={editingRestaurant?.tiktok_url || ""}
+                                                    onChange={(e) => setEditingRestaurant(prev => prev ? { ...prev, tiktok_url: e.target.value } : null)}
+                                                    placeholder="https://tiktok.com/@..."
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Facebook URL</Label>
+                                                <Input
+                                                    value={editingRestaurant?.facebook_url || ""}
+                                                    onChange={(e) => setEditingRestaurant(prev => prev ? { ...prev, facebook_url: e.target.value } : null)}
+                                                    placeholder="https://facebook.com/..."
+                                                />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Instagram URL</Label>
+                                                <Input
+                                                    value={editingRestaurant?.instagram_url || ""}
+                                                    onChange={(e) => setEditingRestaurant(prev => prev ? { ...prev, instagram_url: e.target.value } : null)}
+                                                    placeholder="https://instagram.com/..."
+                                                />
+                                            </div>
                                         </div>
+
                                         <div className="flex justify-end gap-2">
                                             <Button type="button" variant="outline" onClick={() => setIsEditOpen(false)}>Cancel</Button>
                                             <Button type="submit">Update Restaurant</Button>
@@ -884,7 +918,7 @@ const AdminDashboard = () => {
 
                     </Tabs>
                 </div>
-            </section>
+            </section >
             <MenuManagementDialog
                 restaurant={selectedRestaurantForMenu}
                 isOpen={isMenuOpen}
