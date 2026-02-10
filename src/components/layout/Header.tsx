@@ -52,66 +52,66 @@ export function Header() {
         ? "py-3 bg-background/60 backdrop-blur-3xl border-b border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)]"
         : "py-8 bg-transparent"
     )}>
-      <div className="container mx-auto px-8">
+      <div className="container mx-auto px-4 md:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 bg-primary flex items-center justify-center rounded-2xl shadow-lg shadow-primary/20 transition-all duration-500">
-              <MapPin className="w-6 h-6 text-white" />
+          <Link to="/" className="flex items-center gap-2 md:gap-3 group">
+            <div className="w-8 h-8 md:w-12 md:h-12 bg-primary flex items-center justify-center rounded-xl md:rounded-2xl shadow-lg shadow-primary/20 transition-all duration-500">
+              <MapPin className="w-4 h-4 md:w-6 md:h-6 text-white" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-2xl font-black tracking-tight text-foreground transition-colors group-hover:text-primary leading-none">
+              <h1 className="text-sm md:text-2xl font-black tracking-tight text-foreground transition-colors group-hover:text-primary leading-none">
                 KURDISTAN<span className="text-primary">PLACES</span>
               </h1>
-              <span className="text-[9px] uppercase tracking-[0.4em] font-black text-muted-foreground mt-1.5 transition-colors">
+              <span className="hidden md:block text-[9px] uppercase tracking-[0.4em] font-black text-muted-foreground mt-1.5 transition-colors">
                 {t('nav.subtitle.premium')}
               </span>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-12">
+          <nav className="flex items-center gap-4 md:gap-8 lg:gap-12">
             <Link
               to="/"
-              className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
+              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
             >
               {t('nav.home')}
             </Link>
             <Link
               to="/categories"
-              className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
+              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
             >
               {t('nav.categories')}
             </Link>
             <Link
               to="/nearby"
-              className="text-xs font-black uppercase tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
+              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
             >
               {t('nav.nearby')}
             </Link>
           </nav>
 
           {/* User Actions */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             <LanguageSwitcher />
 
             {/* Show loader while initializing session */}
             {loading ? (
-              <div className="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center animate-pulse">
-                <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-secondary/10 flex items-center justify-center animate-pulse">
+                <div className="w-4 h-4 md:w-5 md:h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               </div>
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="rounded-2xl hover:bg-primary/10 transition-colors relative overflow-hidden w-10 h-10">
+                  <Button variant="ghost" size="icon" className="rounded-xl md:rounded-2xl hover:bg-primary/10 transition-colors relative overflow-hidden w-8 h-8 md:w-10 md:h-10">
                     {profile?.avatar_url ? (
                       <img
                         src={profile.avatar_url}
                         alt="Avatar"
-                        className="w-full h-full object-cover rounded-2xl"
+                        className="w-full h-full object-cover rounded-xl md:rounded-2xl"
                       />
                     ) : (
-                      <User className="w-5 h-5" />
+                      <User className="w-4 h-4 md:w-5 md:h-5" />
                     )}
                   </Button>
                 </DropdownMenuTrigger>
@@ -155,10 +155,10 @@ export function Header() {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden rounded-2xl"
+              className="lg:hidden rounded-xl md:rounded-2xl w-8 h-8 md:w-10 md:h-10"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {isMenuOpen ? <X className="w-5 h-5 md:w-6 md:h-6" /> : <Menu className="w-5 h-5 md:w-6 md:h-6" />}
             </Button>
           </div>
         </div>
