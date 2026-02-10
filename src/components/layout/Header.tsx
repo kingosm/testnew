@@ -70,22 +70,22 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="flex items-center gap-4 md:gap-8 lg:gap-12">
+          <nav className="hidden lg:flex items-center gap-4 md:gap-8 lg:gap-12">
             <Link
               to="/"
-              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
+              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all whitespace-nowrap"
             >
               {t('nav.home')}
             </Link>
             <Link
               to="/categories"
-              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
+              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all whitespace-nowrap"
             >
               {t('nav.categories')}
             </Link>
             <Link
               to="/nearby"
-              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all"
+              className="text-[10px] md:text-xs font-black uppercase tracking-[0.15em] md:tracking-[0.2em] text-muted-foreground hover:text-primary transition-all whitespace-nowrap"
             >
               {t('nav.nearby')}
             </Link>
