@@ -6,7 +6,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Languages } from "lucide-react";
+
 
 export function LanguageSwitcher() {
     const { language, setLanguage, isRTL } = useLanguage();
@@ -28,7 +28,7 @@ export function LanguageSwitcher() {
                     className="rounded-full font-bold text-xs h-10 px-3 border border-white/10 hover:bg-white/5 gap-1.5"
                     aria-label="Change language"
                 >
-                    <Languages className="h-4 w-4" />
+
                     <span>{currentLang?.short}</span>
                 </Button>
             </DropdownMenuTrigger>
