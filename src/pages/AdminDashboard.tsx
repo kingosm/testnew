@@ -440,7 +440,8 @@ const AdminDashboard = () => {
 
                     <Tabs defaultValue="categories" className="w-full">
                         <TabsList className="mb-8">
-                            <TabsTrigger value="categories">Categories</TabsTrigger>
+                            <TabsTrigger value="categories">Places</TabsTrigger>
+                            <TabsTrigger value="verticals">Verticals (Global)</TabsTrigger>
                             <TabsTrigger value="reviews">Reviews</TabsTrigger>
                             <TabsTrigger value="users">Users</TabsTrigger>
                         </TabsList>
@@ -905,6 +906,81 @@ const AdminDashboard = () => {
                                         ))}
                                     </TableBody>
                                 </Table>
+                            </div>
+                        </TabsContent>
+
+                        <TabsContent value="verticals">
+                            <div className="space-y-4">
+                                <div className="flex justify-between items-center">
+                                    <h3 className="text-lg font-semibold">Global Verticals</h3>
+                                    <Button onClick={() => {
+                                        setSelectedCategory(null);
+                                        setNewCategoryType('vertical');
+                                        setIsCategoryDialogOpen(true);
+                                    }}>
+                                        <Plus className="w-4 h-4 mr-2" />
+                                        Add Vertical
+                                    </Button>
+                                </div>
+
+                                <div className="rounded-md border">
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHead>Name</TableHead>
+                                                <TableHead>Slug</TableHead>
+                                                <TableHead className="text-right">Actions</TableHead>
+                                            </TableRow>
+                                        </TableHeader>
+                                        <TableBody>
+                                            {categories
+                                                .filter(c => c.category_type === 'vertical' && !c.parent_id)
+                                                .length === 0 ? (
+                                                <TableRow>
+                                                    <TableCell colSpan={3} className="text-center h-24 text-muted-foreground">
+                                                        No global verticals found. Add one to get started.
+                                                    </TableCell>
+                                                </TableRow>
+                                            ) : (
+                                                categories
+                                                    .filter(c => c.category_type === 'vertical' && !c.parent_id)
+                                                    .map((category) => (
+                                                        <TableRow key={category.id}>
+                                                            <TableCell className="font-medium">
+                                                                <div className="flex items-center gap-2">
+                                                                    {category.image_url && (
+                                                                        <img src={category.image_url} alt={category.name} className="w-8 h-8 rounded-full object-cover" />
+                                                                    )}
+                                                                    {category.name}
+                                                                </div>
+                                                            </TableCell>
+                                                            <TableCell>{category.slug}</TableCell>
+                                                            <TableCell className="text-right space-x-2">
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    onClick={() => {
+                                                                        setSelectedCategory(category);
+                                                                        setIsCategoryDialogOpen(true);
+                                                                    }}
+                                                                >
+                                                                    <Pencil className="w-4 h-4" />
+                                                                </Button>
+                                                                <Button
+                                                                    variant="ghost"
+                                                                    size="icon"
+                                                                    className="text-destructive"
+                                                                    onClick={() => handleDeleteCategory(category.id)}
+                                                                >
+                                                                    <Trash2 className="w-4 h-4" />
+                                                                </Button>
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                </div>
                             </div>
                         </TabsContent>
 

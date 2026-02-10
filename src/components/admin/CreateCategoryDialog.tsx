@@ -178,7 +178,7 @@ export function CreateCategoryDialog({
                         </select>
                     </div>
 
-                    {(formData.category_type === 'district' || formData.category_type === 'vertical') && (
+                    {(formData.category_type === 'district' || (formData.category_type === 'vertical' && defaultParentId)) && (
                         <div className="space-y-2">
                             <Label>Parent Category</Label>
                             <select

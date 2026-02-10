@@ -40,11 +40,12 @@ const NearbyPage = () => {
 
   const fetchCategories = useCallback(async () => {
     try {
-      // Fetch categories that are NOT provinces (verticals)
+      // Fetch categories that are vertical (or standard) and have no parent (global)
       const { data, error } = await (supabase as any)
         .from("categories")
         .select("*")
-        .neq("category_type", "province")
+        .eq("category_type", "vertical")
+        .is("parent_id", null)
         .limit(10); // Limit to top 10 for horizontal scroll
 
       if (error) {
