@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Layout } from "@/components/layout/Layout";
 import { RestaurantCard } from "@/components/restaurants/RestaurantCard";
 import { Button } from "@/components/ui/button";
-import { MapPin, Navigation, Loader2 } from "lucide-react";
+import { MapPin, Navigation, Loader2, UtensilsCrossed } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useLocation } from "@/hooks/use-location";
 import { cn } from "@/lib/utils";
@@ -20,13 +20,45 @@ export interface Restaurant {
   avg_rating?: number;
   review_count?: number;
   distance?: number;
+  category_id?: string;
+}
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  icon?: string;
 }
 
 const NearbyPage = () => {
-  const { t } = useLanguage();
+  const { t, translateCategoryName } = useLanguage();
   const { userLocation, isLoadingLocation, locationError, requestLocation, calculateDistance } = useLocation();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      // Fetch categories that are NOT provinces (verticals)
+      const { data, error } = await (supabase as any)
+        .from("categories")
+        .select("*")
+        .neq("category_type", "province")
+        .limit(10); // Limit to top 10 for horizontal scroll
+
+      if (error) {
+        console.error("Error fetching categories:", error);
+        return;
+      }
+
+      if (data) {
+        setCategories(data);
+      }
+    } catch (e) {
+      console.error("Failed to fetch categories", e);
+    }
+  }, []);
 
   const fetchRestaurants = useCallback(async () => {
     try {
@@ -80,11 +112,12 @@ const NearbyPage = () => {
 
   useEffect(() => {
     fetchRestaurants();
+    fetchCategories();
     requestLocation();
 
     const timer = setTimeout(() => setIsLoading(false), 5000);
     return () => clearTimeout(timer);
-  }, [fetchRestaurants]);
+  }, [fetchRestaurants, fetchCategories]);
 
   const sortedRestaurants = userLocation
     ? [...restaurants]
@@ -102,13 +135,14 @@ const NearbyPage = () => {
       }))
       .sort((a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity))
       .filter((r) => (r.distance ?? Infinity) <= 5) // Max 5km distance
+      .filter((r) => selectedCategory ? r.category_id === selectedCategory : true)
     : restaurants;
 
   return (
     <Layout>
       <section className="pt-32 pb-24 bg-background min-h-screen">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
             <div className="space-y-4">
               <div className="place-badge">
                 {t('nearby.badge.premium')}
@@ -153,6 +187,39 @@ const NearbyPage = () => {
             </Button>
           </div>
 
+          {/* Category Filter Pills */}
+          {categories.length > 0 && (
+            <div className="flex items-center gap-3 overflow-x-auto pb-8 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+              <Button
+                variant="ghost"
+                onClick={() => setSelectedCategory(null)}
+                className={cn(
+                  "rounded-full h-10 px-6 font-bold text-xs uppercase tracking-wider whitespace-nowrap border transition-all",
+                  selectedCategory === null
+                    ? "bg-primary text-white border-primary"
+                    : "bg-secondary/50 text-muted-foreground border-white/5 hover:bg-secondary hover:text-foreground"
+                )}
+              >
+                All
+              </Button>
+              {categories.map((category) => (
+                <Button
+                  key={category.id}
+                  variant="ghost"
+                  onClick={() => setSelectedCategory(category.id === selectedCategory ? null : category.id)}
+                  className={cn(
+                    "rounded-full h-10 px-6 font-bold text-xs uppercase tracking-wider whitespace-nowrap border transition-all",
+                    selectedCategory === category.id
+                      ? "bg-primary text-white border-primary shadow-lg shadow-primary/25"
+                      : "bg-secondary/50 text-muted-foreground border-white/5 hover:bg-secondary hover:text-foreground"
+                  )}
+                >
+                  {translateCategoryName(category.name)}
+                </Button>
+              ))}
+            </div>
+          )}
+
           {locationError && (
             <div className="mb-8 p-4 glass-card border-rose-500/20 bg-rose-500/5 rounded-2xl text-rose-500 font-bold flex items-center gap-3">
               <Navigation className="w-5 h-5" />
@@ -193,6 +260,15 @@ const NearbyPage = () => {
                 <Navigation className="w-10 h-10 text-primary opacity-50" />
               </div>
               <p className="text-2xl font-black text-muted-foreground tracking-tight">{t('index.no_results')}</p>
+              {selectedCategory && (
+                <Button
+                  variant="link"
+                  onClick={() => setSelectedCategory(null)}
+                  className="mt-4 text-primary"
+                >
+                  Clear Filters
+                </Button>
+              )}
             </div>
           )}
         </div>
