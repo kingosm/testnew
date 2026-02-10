@@ -1,116 +1,121 @@
+
 import { Link } from "react-router-dom";
-import { MapPin, Mail, Phone } from "lucide-react";
+import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-export function Footer() {
+export const Footer = () => {
+  const { t } = useLanguage();
+
   return (
-    <footer className="bg-background border-t border-border/50 relative overflow-hidden">
-      {/* Background patterns */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -mr-48 -mt-48" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/5 rounded-full blur-[100px] -ml-48 -mb-48" />
+    <footer className="relative bg-background border-t border-border/40 mt-auto overflow-hidden">
+      <div className="absolute inset-0 bg-grid-white/[0.02] -z-10" />
+      <div className="absolute inset-y-0 right-0 w-1/3 bg-primary/5 blur-[120px] rounded-full pointer-events-none" />
 
-      <div className="container mx-auto px-6 py-24 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          {/* Brand */}
-          <div className="lg:col-span-5 space-y-8">
-            <Link to="/" className="flex items-center gap-4 group">
-              <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center shadow-2xl transition-all duration-500">
-                <MapPin className="w-7 h-7 text-white" />
-              </div>
+      <div className="container mx-auto px-4 py-16 md:py-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          {/* Brand Column */}
+          <div className="space-y-6">
+            <Link to="/" className="inline-block group">
               <div className="flex flex-col">
                 <span className="text-3xl font-black tracking-tighter text-foreground">
                   KURDISTAN<span className="text-primary">PLACES</span>
                 </span>
                 <span className="text-[10px] uppercase tracking-[0.4em] font-black text-primary opacity-70">
-                  Global Discovery
+                  {t('footer.global_discovery')}
                 </span>
               </div>
             </Link>
-            <p className="text-lg text-muted-foreground max-w-md font-medium leading-relaxed">
-              Mapping the finest destinations across Kurdistan. Join our world-class directory of handpicked locations and hidden gems.
+            <p className="text-muted-foreground leading-relaxed max-w-sm font-medium">
+              {t('footer.description')}
             </p>
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center hover:bg-primary hover:text-white transition-all cursor-pointer">
-                <Mail className="w-5 h-5" />
-              </div>
-              <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center hover:bg-primary hover:text-white transition-all cursor-pointer">
-                <Phone className="w-5 h-5" />
-              </div>
+            <div className="flex gap-4 pt-2">
+              {[Instagram, Twitter, Facebook].map((Icon, i) => (
+                <a
+                  key={i}
+                  href="#"
+                  className="w-10 h-10 rounded-xl bg-secondary/50 flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-primary/20"
+                >
+                  <Icon className="w-5 h-5" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-3 lg:col-start-7">
+          {/* Navigation */}
+          <div>
             <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">
-              Navigation
+              {t('footer.nav.title')}
             </h4>
             <nav className="flex flex-col gap-6">
-              <Link
-                to="/"
-                className="text-lg font-bold text-muted-foreground hover:text-foreground transition-all hover:translate-x-2"
-              >
-                Explore Home
-              </Link>
-              <Link
-                to="/categories"
-                className="text-lg font-bold text-muted-foreground hover:text-foreground transition-all hover:translate-x-2"
-              >
-                Browse Categories
-              </Link>
-              <Link
-                to="/nearby"
-                className="text-lg font-bold text-muted-foreground hover:text-foreground transition-all hover:translate-x-2"
-              >
-                Find Local Places
-              </Link>
-              <Link
-                to="/auth"
-                className="text-lg font-bold text-muted-foreground hover:text-foreground transition-all hover:translate-x-2"
-              >
-                Partner with us
-              </Link>
+              {[
+                { to: '/', label: t('footer.nav.home') },
+                { to: '/categories', label: t('footer.nav.categories') },
+                { to: '/nearby', label: t('footer.nav.nearby') },
+                { to: '#', label: t('footer.nav.partner') },
+              ].map((link, i) => (
+                <Link
+                  key={i}
+                  to={link.to}
+                  className="text-lg font-bold text-muted-foreground hover:text-foreground transition-all hover:translate-x-2"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
           </div>
 
-          {/* Contact & Support */}
-          <div className="lg:col-span-3">
+          {/* Contact */}
+          <div className="space-y-8">
             <h4 className="text-xs font-black mb-8 uppercase tracking-[0.3em] text-primary">
-              Get in Touch
+              {t('footer.contact.title')}
             </h4>
-            <div className="flex flex-col gap-8">
-              <div className="group">
-                <span className="text-[10px] uppercase tracking-widest font-black text-muted-foreground block mb-2 opacity-50">Email Support</span>
-                <a
-                  href="mailto:contact@kurdistanplaces.com"
-                  className="text-xl font-black text-foreground hover:text-primary transition-colors"
-                >
-                  contact@kurdistanplaces.com
-                </a>
-              </div>
-              <div className="group">
-                <span className="text-[10px] uppercase tracking-widest font-black text-muted-foreground block mb-2 opacity-50">Member Services</span>
-                <a
-                  href="tel:+9647500000000"
-                  className="text-xl font-black text-foreground hover:text-primary transition-colors"
-                >
-                  +964 750 000 0000
-                </a>
-              </div>
+            <div className="space-y-6">
+              <a href="mailto:hello@kurdistanplaces.com" className="flex items-center gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-secondary/50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1">{t('footer.contact.email')}</span>
+                  <span className="text-foreground font-bold group-hover:text-primary transition-colors">hello@kurdistanplaces.com</span>
+                </div>
+              </a>
+              <a href="tel:+9647500000000" className="flex items-center gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-secondary/50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-1">{t('footer.contact.phone')}</span>
+                  <span className="text-foreground font-bold group-hover:text-primary transition-colors">+964 750 000 0000</span>
+                </div>
+              </a>
             </div>
+          </div>
+
+          {/* Location/Newsletter placeholder or similar */}
+          <div className="bg-secondary/30 p-8 rounded-3xl border border-white/5 backdrop-blur-sm">
+            <MapPin className="w-8 h-8 text-primary mb-4" />
+            <h5 className="font-bold text-xl mb-2">Erbil, Kurdistan</h5>
+            <p className="text-muted-foreground text-sm font-medium mb-6">
+              Dream City, Empire World
+              <br />
+              44001 Erbil, Iraq
+            </p>
           </div>
         </div>
 
-        <div className="mt-24 pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="mt-20 pt-8 border-t border-border/40 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-40">
-            © {new Date().getFullYear()} Kurdistan Places. The Ultimate Discovery Guide.
+            {t('footer.copyright', { year: new Date().getFullYear() })}
           </p>
-          <div className="flex items-center gap-8 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-primary transition-colors">Safety</a>
+          <div className="flex gap-8">
+            {[t('footer.privacy'), t('footer.terms'), t('footer.safety')].map((item, i) => (
+              <a key={i} href="#" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] hover:text-primary transition-colors">
+                {item}
+              </a>
+            ))}
           </div>
         </div>
       </div>
     </footer>
   );
-}
-
+};

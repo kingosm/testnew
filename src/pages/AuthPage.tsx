@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useLanguage } from "@/contexts/LanguageContext"; // Import
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Layout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -46,8 +46,8 @@ const AuthPage = () => {
     e.preventDefault();
     if (!validateForm()) {
       toast({
-        title: "Invalid Input",
-        description: "Please check your email and password format.",
+        title: t('auth.invalid_input'),
+        description: t('auth.check_input'),
         variant: "destructive"
       });
       return;
@@ -72,8 +72,8 @@ const AuthPage = () => {
           });
         } else if (error.message.includes("Email not confirmed")) {
           toast({
-            title: "Email Not Confirmed",
-            description: "Please check your email to confirm your account.",
+            title: t('auth.email_not_confirmed'),
+            description: t('auth.check_email_confirm'),
             variant: "destructive",
           });
         } else {
@@ -142,7 +142,7 @@ const AuthPage = () => {
       if (data.user && !data.session) {
         toast({
           title: t('auth.account_created'),
-          description: "Please check your email to confirm your account before signing in.",
+          description: t('auth.check_email_confirm'),
         });
       } else {
         toast({
@@ -231,7 +231,7 @@ const AuthPage = () => {
               </div>
             </Link>
             <div className="flex flex-col items-center gap-3 mb-6">
-              <span className="text-primary text-sm font-black uppercase tracking-[0.4em]">Get Started</span>
+              <span className="text-primary text-sm font-black uppercase tracking-[0.4em]">{t('auth.get_started')}</span>
               <h1 className="text-5xl font-black tracking-tighter leading-none">
                 KURDISTAN<span className="text-primary">PLACES</span>
               </h1>
@@ -323,11 +323,11 @@ const AuthPage = () => {
                   <div className="relative flex items-center justify-center my-8">
                     <div className="absolute inset-x-0 h-px bg-white/10" />
                     <span className="relative bg-[#1A1F2C] px-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                      Or continue with
+                      {t('auth.or_continue')}
                     </span>
                   </div>
 
-                  <GoogleButton text="Sign in with Google" />
+                  <GoogleButton text={t('auth.google_signin')} />
                 </form>
               </TabsContent>
 
@@ -403,11 +403,11 @@ const AuthPage = () => {
                   <div className="relative flex items-center justify-center my-8">
                     <div className="absolute inset-x-0 h-px bg-white/10" />
                     <span className="relative bg-[#1A1F2C] px-4 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                      Or continue with
+                      {t('auth.or_continue')}
                     </span>
                   </div>
 
-                  <GoogleButton text="Sign up with Google" />
+                  <GoogleButton text={t('auth.google_signup')} />
                 </form>
               </TabsContent>
             </Tabs>

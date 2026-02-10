@@ -15,7 +15,6 @@ import {
   Navigation,
   Heart,
   Clock,
-  Star,
   ExternalLink,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,7 +29,6 @@ import {
 } from "@/components/ui/dialog";
 import { MapComponent } from "@/components/map/MapComponent";
 import { useLocation } from "@/hooks/use-location";
-
 
 interface Restaurant {
   id: string;
@@ -100,7 +98,6 @@ const RestaurantPage = () => {
 
     return () => subscription.unsubscribe();
   }, []);
-
 
   const fetchReviews = useCallback(async (restaurantId: string) => {
     const { data: reviewsData } = await supabase
@@ -197,17 +194,21 @@ const RestaurantPage = () => {
         .delete()
         .eq("user_id", user.id)
         .eq("restaurant_id", restaurant.id);
-      setIsFavorite(false);
+      setFavorite(false);
       toast({ title: t('restaurant.removed_favorites') });
     } else {
       await supabase.from("favorites").insert({
         user_id: user.id,
         restaurant_id: restaurant.id,
       });
-      setIsFavorite(true);
+      setFavorite(true);
       toast({ title: t('restaurant.added_favorites') });
     }
   };
+
+  const setFavorite = (fav: boolean) => {
+    setIsFavorite(fav);
+  }
 
   const avgRating =
     reviews.length > 0
@@ -317,7 +318,7 @@ const RestaurantPage = () => {
                 <div className="hidden md:block w-px h-8 bg-white/20" />
                 <div className="flex items-center gap-2 text-white/80">
                   <Clock className="w-5 h-5" />
-                  <span className="font-bold tracking-tight">{restaurant.opening_hours || "Open Now"}</span>
+                  <span className="font-bold tracking-tight">{restaurant.opening_hours || t('restaurant.default_hours')}</span>
                 </div>
               </div>
             </div>
@@ -361,7 +362,7 @@ const RestaurantPage = () => {
               className="pill-button hero-gradient h-12 px-8 text-white shadow-lg shadow-primary/20 hover:scale-105 transition-all"
             >
               <MapPin className="w-4 h-4 mr-2" />
-              Directions
+              {t('restaurant.directions')}
             </Button>
 
             <Dialog open={showMap} onOpenChange={setShowMap}>
@@ -369,7 +370,7 @@ const RestaurantPage = () => {
                 <DialogHeader className="p-6 pb-2 absolute top-0 left-0 z-50 w-full bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
                   <DialogTitle className="text-white drop-shadow-md text-xl font-bold flex items-center gap-2">
                     <Navigation className="w-5 h-5 text-primary" />
-                    {restaurant.name} Location
+                    {t('restaurant.location.title', { name: restaurant.name })}
                   </DialogTitle>
                 </DialogHeader>
 
@@ -384,7 +385,7 @@ const RestaurantPage = () => {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center bg-secondary/20">
-                      <p className="text-muted-foreground">Location coordinates not available.</p>
+                      <p className="text-muted-foreground">{t('restaurant.location.unavailable')}</p>
                     </div>
                   )}
 
@@ -394,7 +395,7 @@ const RestaurantPage = () => {
                       onClick={openDirections}
                       className="shadow-xl shadow-black/20 font-bold bg-white text-black hover:bg-gray-100 border border-gray-200"
                     >
-                      Open in Google Maps
+                      {t('restaurant.gmaps')}
                       <ExternalLink className="w-4 h-4 ml-2" />
                     </Button>
                   </div>
@@ -429,7 +430,7 @@ const RestaurantPage = () => {
                   <div className="space-y-8 md:space-y-12">
                     <div className="space-y-6">
                       <h3 className="text-3xl md:text-4xl font-display font-medium">
-                        About this place
+                        {t('restaurant.about.title')}
                       </h3>
                       <p className="text-lg md:text-xl text-muted-foreground leading-relaxed font-light">
                         {restaurant.description || t('restaurant.about.no_desc')}
@@ -442,9 +443,9 @@ const RestaurantPage = () => {
                           <MapPin className="w-6 h-6 md:w-7 md:h-7" />
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-lg md:text-xl font-display font-medium">Location</h4>
+                          <h4 className="text-lg md:text-xl font-display font-medium">{t('restaurant.location')}</h4>
                           <p className="text-muted-foreground font-light leading-relaxed text-sm md:text-base">
-                            {restaurant.address || "Contact for address details."}
+                            {restaurant.address || t('restaurant.no_address')}
                           </p>
                         </div>
                       </div>
@@ -453,9 +454,9 @@ const RestaurantPage = () => {
                           <Phone className="w-6 h-6 md:w-7 md:h-7" />
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-lg md:text-xl font-display font-medium">Contact</h4>
+                          <h4 className="text-lg md:text-xl font-display font-medium">{t('restaurant.contact')}</h4>
                           <p className="text-muted-foreground font-light leading-relaxed text-sm md:text-base">
-                            {restaurant.phone || "No phone listed."}
+                            {restaurant.phone || t('restaurant.no_phone')}
                           </p>
                         </div>
                       </div>
@@ -471,7 +472,7 @@ const RestaurantPage = () => {
                         <span className="text-3xl md:text-4xl font-display">{avgRating.toFixed(1)}</span>
                         <div className="flex flex-col">
                           <div className="flex"><StarRating rating={5} size="sm" /></div>
-                          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{reviews.length} Verified Reviews</span>
+                          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{reviews.length} {t('restaurant.verified_reviews')}</span>
                         </div>
                       </div>
                     </div>
@@ -524,7 +525,7 @@ const RestaurantPage = () => {
               <div className="sticky top-32 space-y-8">
                 <div className="rounded-3xl p-8 bg-background/60 backdrop-blur-xl border border-white/10 shadow-2xl">
                   <h4 className="text-2xl font-display font-medium mb-8">
-                    Info & Hours
+                    {t('restaurant.info_hours')}
                   </h4>
                   <div className="space-y-6">
                     <div className="flex items-center gap-4 group">
@@ -532,8 +533,8 @@ const RestaurantPage = () => {
                         <Clock className="w-6 h-6" />
                       </div>
                       <div>
-                        <span className="text-[10px] font-black uppercase tracking-widest opacity-40 block">Opening Hours</span>
-                        <span className="font-bold tracking-tight text-lg">{restaurant.opening_hours || "09:00 AM - 11:00 PM"}</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest opacity-40 block">{t('restaurant.opening_hours_label')}</span>
+                        <span className="font-bold tracking-tight text-lg">{restaurant.opening_hours || t('restaurant.default_hours')}</span>
                       </div>
                     </div>
                     <div className="w-full h-px bg-white/5" />
@@ -542,9 +543,9 @@ const RestaurantPage = () => {
                         <Navigation className="w-6 h-6" />
                       </div>
                       <div>
-                        <span className="text-[10px] font-black uppercase tracking-widest opacity-40 block">Status</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest opacity-40 block">{t('restaurant.status')}</span>
                         <span className="font-bold tracking-tight text-emerald-500 flex items-center gap-2">
-                          Open Now <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                          {t('restaurant.open_now')} <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                         </span>
                       </div>
                     </div>
@@ -577,7 +578,7 @@ const RestaurantPage = () => {
             className="flex-1 rounded-full h-14 font-black uppercase tracking-widest text-xs pill-button hero-gradient shadow-lg shadow-primary/20 text-white"
           >
             <MapPin className="w-4 h-4 mr-2" />
-            Directions
+            {t('restaurant.directions')}
           </Button>
 
         </div>

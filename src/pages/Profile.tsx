@@ -75,8 +75,8 @@ const Profile = () => {
     const handleFileSelect = (file: File) => {
         if (!file.type.startsWith('image/')) {
             toast({
-                title: "Invalid file type",
-                description: "Please select an image file",
+                title: t('profile.invalid_file_type'),
+                description: t('profile.select_image_file'),
                 variant: "destructive",
             });
             return;
@@ -84,8 +84,8 @@ const Profile = () => {
 
         if (file.size > 5 * 1024 * 1024) {
             toast({
-                title: "File too large",
-                description: "Please select an image under 5MB",
+                title: t('profile.file_too_large'),
+                description: t('profile.max_file_size'),
                 variant: "destructive",
             });
             return;
@@ -168,14 +168,14 @@ const Profile = () => {
             await refreshProfile();
 
             toast({
-                title: "Photo updated!",
-                description: "Your profile picture has been changed",
+                title: t('profile.photo_updated'),
+                description: t('profile.photo_changed_desc'),
             });
         } catch (error) {
             console.error("Upload error details:", error);
             const errorMessage = error instanceof Error ? error.message : "Unknown error";
             toast({
-                title: "Upload Failed",
+                title: t('profile.upload_failed'),
                 description: `Error: ${errorMessage}`,
                 variant: "destructive",
             });
@@ -209,8 +209,8 @@ const Profile = () => {
             await refreshProfile();
 
             toast({
-                title: "Photo removed",
-                description: "Your profile picture has been removed",
+                title: t('profile.photo_removed'),
+                description: t('profile.photo_removed_desc'),
             });
         } catch (error) {
             toast({
@@ -224,8 +224,8 @@ const Profile = () => {
     const handleUsernameEdit = () => {
         if (!canEditUsername) {
             toast({
-                title: "Username already changed",
-                description: "You can only change your username once",
+                title: t('profile.username_already_changed'),
+                description: t('profile.username_change_limit'),
                 variant: "destructive",
             });
             return;
@@ -236,8 +236,8 @@ const Profile = () => {
     const handleUsernameSave = async () => {
         if (!profile || !editedUsername.trim()) {
             toast({
-                title: "Invalid username",
-                description: "Username cannot be empty",
+                title: t('profile.invalid_username'),
+                description: t('profile.username_empty'),
                 variant: "destructive",
             });
             return;
@@ -261,8 +261,8 @@ const Profile = () => {
             setCanEditUsername(false);
 
             toast({
-                title: "Username updated!",
-                description: "Your username has been changed. This was your one-time change.",
+                title: t('profile.username_updated'),
+                description: t('profile.username_updated_desc'),
             });
         } catch (error) {
             console.error("Error saving username:", error);
@@ -359,7 +359,7 @@ const Profile = () => {
                                             )}
                                             <div className="absolute inset-0 bg-black/60 opacity-0 group-hover/avatar:opacity-100 transition-all flex flex-col items-center justify-center gap-2">
                                                 <Camera className="w-12 h-12 text-white" />
-                                                <span className="text-xs font-bold text-white uppercase tracking-wider">Change Photo</span>
+                                                <span className="text-xs font-bold text-white uppercase tracking-wider">{t('profile.change_photo')}</span>
                                             </div>
                                         </button>
                                         <input
@@ -381,10 +381,10 @@ const Profile = () => {
 
                                     <div className="text-center lg:text-left">
                                         <p className="text-xs text-muted-foreground font-medium">
-                                            Click to change photo
+                                            {t('profile.click_change_photo')}
                                         </p>
                                         <p className="text-xs text-muted-foreground/60 font-medium">
-                                            Max 5MB • JPG, PNG
+                                            {t('profile.photo_limits')}
                                         </p>
                                     </div>
                                 </div>
@@ -400,7 +400,7 @@ const Profile = () => {
                                                         value={editedUsername}
                                                         onChange={(e) => setEditedUsername(e.target.value)}
                                                         className="h-14 px-6 rounded-2xl bg-white/[0.03] border-primary/30 focus:border-primary/50 transition-all font-bold text-2xl"
-                                                        placeholder="Enter your name"
+                                                        placeholder={t('profile.enter_name_placeholder')}
                                                         autoFocus
                                                         onKeyDown={(e) => {
                                                             if (e.key === 'Enter') handleUsernameSave();
@@ -446,7 +446,7 @@ const Profile = () => {
                                         {!canEditUsername && !isEditingUsername && (
                                             <p className="text-xs text-muted-foreground font-medium flex items-center gap-2">
                                                 <AlertCircle className="w-3 h-3" />
-                                                Username has been set (one-time change used)
+                                                {t('profile.username_set_warning')}
                                             </p>
                                         )}
                                         <div className="flex flex-wrap items-center gap-3">
@@ -456,7 +456,7 @@ const Profile = () => {
                                             </div>
                                             <div className="flex items-center gap-2 bg-secondary/30 px-3 py-1.5 rounded-full border border-white/5">
                                                 <Calendar className="w-4 h-4 text-primary" />
-                                                <span className="text-sm font-medium">Joined {joinedDate}</span>
+                                                <span className="text-sm font-medium">{t('profile.joined', { date: joinedDate })}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -470,7 +470,7 @@ const Profile = () => {
                                                 </div>
                                                 <div>
                                                     <p className="text-4xl font-black">{stats.reviews}</p>
-                                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Reviews</p>
+                                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('profile.stats.reviews')}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -482,7 +482,7 @@ const Profile = () => {
                                                 </div>
                                                 <div>
                                                     <p className="text-4xl font-black">{stats.favorites}</p>
-                                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Favorites</p>
+                                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('profile.stats.favorites')}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -494,7 +494,7 @@ const Profile = () => {
                                                 </div>
                                                 <div>
                                                     <p className="text-4xl font-black">{avgRating}</p>
-                                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Avg Rating</p>
+                                                    <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{t('profile.stats.rating')}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -505,7 +505,7 @@ const Profile = () => {
                                         <div className="bg-secondary/20 rounded-2xl p-6 border border-white/5">
                                             <h3 className="text-sm font-black uppercase tracking-wider text-muted-foreground mb-4 flex items-center gap-2">
                                                 <TrendingUp className="w-4 h-4" />
-                                                Recent Activity
+                                                {t('profile.recent_activity')}
                                             </h3>
                                             <div className="space-y-3">
                                                 {recentActivity.map((activity, idx) => (
@@ -515,7 +515,7 @@ const Profile = () => {
                                                         </div>
                                                         <div className="flex-1 min-w-0">
                                                             <p className="font-bold truncate">{activity.restaurants?.name || 'Restaurant'}</p>
-                                                            <p className="text-xs text-muted-foreground">{activity.rating} stars • {new Date(activity.created_at).toLocaleDateString()}</p>
+                                                            <p className="text-xs text-muted-foreground">{t('profile.stars', { count: activity.rating })} • {new Date(activity.created_at).toLocaleDateString()}</p>
                                                         </div>
                                                     </div>
                                                 ))}
@@ -533,9 +533,9 @@ const Profile = () => {
             <Dialog open={showAvatarDialog} onOpenChange={setShowAvatarDialog}>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle className="text-2xl font-black">Profile Picture</DialogTitle>
+                        <DialogTitle className="text-2xl font-black">{t('profile.dialog.title')}</DialogTitle>
                         <DialogDescription>
-                            Preview and manage your profile picture
+                            {t('profile.dialog.desc')}
                         </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-6">
@@ -562,7 +562,7 @@ const Profile = () => {
                                     <div className="text-center space-y-2">
                                         <Upload className="w-16 h-16 text-muted-foreground opacity-30 mx-auto" />
                                         <p className="text-sm text-muted-foreground font-medium">
-                                            Drag & drop or click to upload
+                                            {t('profile.upload_text')}
                                         </p>
                                     </div>
                                 )}
@@ -572,7 +572,7 @@ const Profile = () => {
                         {isUploading && (
                             <div className="space-y-2">
                                 <div className="flex items-center justify-between text-sm">
-                                    <span className="font-medium">Uploading...</span>
+                                    <span className="font-medium">{t('profile.uploading')}</span>
                                     <span className="font-bold text-primary">{uploadProgress}%</span>
                                 </div>
                                 <div className="h-2 bg-secondary/20 rounded-full overflow-hidden">
@@ -592,7 +592,7 @@ const Profile = () => {
                                 disabled={isUploading}
                             >
                                 <Upload className="w-4 h-4 mr-2" />
-                                Choose Photo
+                                {t('profile.choose_photo')}
                             </Button>
                             {(avatarUrl || previewUrl) && (
                                 <Button
@@ -602,7 +602,7 @@ const Profile = () => {
                                     disabled={isUploading}
                                 >
                                     <X className="w-4 h-4 mr-2" />
-                                    Remove
+                                    {t('profile.remove_photo')}
                                 </Button>
                             )}
                         </div>
@@ -615,12 +615,12 @@ const Profile = () => {
                                 {isUploading ? (
                                     <>
                                         <Loader2 className="w-5 h-5 animate-spin mr-2" />
-                                        Uploading...
+                                        {t('profile.uploading')}
                                     </>
                                 ) : (
                                     <>
                                         <Camera className="w-5 h-5 mr-2" />
-                                        Set as Profile Picture
+                                        {t('profile.set_photo')}
                                     </>
                                 )}
                             </Button>
