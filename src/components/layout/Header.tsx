@@ -60,12 +60,9 @@ export function Header() {
               <MapPin className="w-5 h-5 md:w-7 md:h-7 text-white" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl md:text-3xl font-black tracking-tighter text-foreground transition-colors group-hover:text-primary leading-none">
+              <h1 className="text-lg md:text-3xl font-black tracking-tighter text-foreground transition-colors group-hover:text-primary leading-none whitespace-nowrap">
                 KURDISTAN<span className="text-primary">PLACES</span>
               </h1>
-              <span className="hidden md:block text-[10px] uppercase tracking-[0.4em] font-black text-muted-foreground mt-1 transition-colors">
-                {t('nav.subtitle.premium')}
-              </span>
             </div>
           </Link>
 
