@@ -147,7 +147,7 @@ export function Header() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button asChild className="pill-button hero-gradient px-8 text-background">
+              <Button asChild className="hidden lg:flex pill-button hero-gradient px-8 text-background">
                 <Link to="/auth">{t('nav.signin')}</Link>
               </Button>
             )}

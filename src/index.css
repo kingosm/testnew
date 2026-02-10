@@ -186,3 +186,231 @@
 ::-webkit-scrollbar-thumb {
   @apply bg-muted rounded-full hover:bg-primary/50 transition-colors;
 }
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+@media (max-width: 1024px) {
+
+  /* Better spacing for mobile */
+  .container {
+    @apply px-4;
+  }
+
+  /* Ensure header doesn't overlap content */
+  body {
+    @apply pt-20;
+  }
+
+  /* Make buttons more touch-friendly */
+  button,
+  .pill-button {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Responsive text sizes */
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  /* Better card spacing on mobile */
+  .modern-card,
+  .place-grid-item {
+    @apply p-4;
+  }
+
+  /* Ensure images don't overflow */
+  img {
+    @apply max-w-full h-auto;
+  }
+
+  /* Better mobile menu */
+  nav a {
+    @apply text-base py-3;
+  }
+
+  /* Fix grid layouts for mobile */
+  .grid {
+    @apply grid-cols-1 gap-4;
+  }
+
+  /* Ensure modals/dialogs fit on screen */
+  [role="dialog"],
+  .dialog-content {
+    @apply max-w-[95vw] max-h-[90vh] overflow-auto;
+  }
+
+  /* Better form inputs on mobile */
+  input,
+  textarea,
+  select {
+    @apply text-base;
+    /* Prevents zoom on iOS */
+  }
+
+  /* Stack flex items on mobile */
+  .flex-row-mobile {
+    @apply flex-col;
+  }
+
+  /* Hide desktop-only elements */
+  .desktop-only {
+    @apply hidden;
+  }
+
+  /* Show mobile-only elements */
+  .mobile-only {
+    @apply block;
+  }
+
+  /* Better spacing for sections */
+  section {
+    @apply py-8;
+  }
+
+  /* Ensure maps are responsive */
+  .map-container {
+    @apply h-[300px] w-full;
+  }
+
+  /* Better padding for content areas */
+  .content-area {
+    @apply px-4 py-6;
+  }
+
+  /* Fix overflow issues */
+  * {
+    @apply overflow-x-hidden;
+  }
+
+  html,
+  body {
+    @apply overflow-x-hidden w-full;
+  }
+
+  /* Better mobile shadows (less intense) */
+  .shadow-2xl,
+  .shadow-3xl {
+    @apply shadow-lg;
+  }
+
+  /* Responsive padding for hero sections */
+  .hero-section {
+    @apply py-12 px-4;
+  }
+
+  /* Better mobile navigation spacing */
+  header {
+    @apply px-4;
+  }
+
+  /* Ensure dropdowns fit on screen */
+  .dropdown-menu {
+    @apply max-w-[90vw];
+  }
+
+  /* Better mobile table display */
+  table {
+    @apply text-sm;
+  }
+
+  /* Stack table cells on very small screens */
+  @media (max-width: 640px) {
+
+    table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      @apply block;
+    }
+
+    thead tr {
+      @apply hidden;
+    }
+
+    tr {
+      @apply mb-4 border border-white/10 rounded-lg;
+    }
+
+    td {
+      @apply text-right relative pl-[50%];
+    }
+
+    td:before {
+      content: attr(data-label);
+      @apply absolute left-4 font-bold;
+    }
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 640px) {
+
+  /* Even smaller text for tiny screens */
+  h1 {
+    @apply text-2xl;
+  }
+
+  h2 {
+    @apply text-xl;
+  }
+
+  /* Tighter spacing */
+  .container {
+    @apply px-3;
+  }
+
+  /* Smaller buttons on tiny screens */
+  .pill-button {
+    @apply px-6 py-3 text-[10px];
+  }
+
+  /* Better mobile card grid */
+  .place-grid-item {
+    @apply p-3 gap-3;
+  }
+}
+
+/* Landscape mobile orientation */
+@media (max-height: 500px) and (orientation: landscape) {
+
+  /* Reduce header size in landscape */
+  header {
+    @apply py-2;
+  }
+
+  /* Smaller hero sections in landscape */
+  .hero-section {
+    @apply py-6;
+  }
+
+  /* Reduce vertical spacing */
+  section {
+    @apply py-4;
+  }
+}
+
+/* Safe area for notched devices (iPhone X+) */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  header {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
